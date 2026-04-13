@@ -7,21 +7,25 @@
     <title>Dashboard Masjid</title>
     <style>
       :root {
-        --bg0: #0b1220;
-        --bg1: #0f1a30;
+        --g0: #00c853;
+        --g1: #004c1b;
+
+        --bg0: #06120a;
+        --bg1: #04140a;
         --card: rgba(255, 255, 255, 0.06);
-        --card2: rgba(255, 255, 255, 0.08);
+        --card2: rgba(255, 255, 255, 0.09);
         --stroke: rgba(255, 255, 255, 0.12);
         --text: rgba(255, 255, 255, 0.92);
-        --muted: rgba(255, 255, 255, 0.72);
-        --faint: rgba(255, 255, 255, 0.55);
-        --brand: #59d5ff;
-        --brand2: #7c5cff;
-        --ok: #34d399;
+        --muted: rgba(255, 255, 255, 0.74);
+        --faint: rgba(255, 255, 255, 0.58);
+
+        --brand: var(--g0);
+        --brand2: var(--g1);
+        --ok: var(--g0);
         --warn: #fbbf24;
         --danger: #fb7185;
-        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-        --r: 18px;
+        --shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+        --r: 20px;
         --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           "Liberation Mono", "Courier New", monospace;
         --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
@@ -42,14 +46,14 @@
         font-family: var(--sans);
         color: var(--text);
         background: radial-gradient(
-            1200px 900px at 15% 10%,
-            rgba(89, 213, 255, 0.18),
+            1200px 900px at 15% 12%,
+            rgba(0, 200, 83, 0.18),
             transparent 55%
           ),
           radial-gradient(
-            900px 700px at 80% 25%,
-            rgba(124, 92, 255, 0.18),
-            transparent 58%
+            900px 700px at 85% 20%,
+            rgba(0, 76, 27, 0.35),
+            transparent 60%
           ),
           linear-gradient(160deg, var(--bg0), var(--bg1));
       }
@@ -60,16 +64,19 @@
       }
 
       .container {
-        width: min(1100px, calc(100% - 32px));
-        margin: 28px auto 60px;
+        min-height: 100vh;
+        width: 100%;
+        padding: clamp(14px, 2.2vw, 22px);
+        display: grid;
+        grid-template-rows: auto 1fr;
+        gap: 14px;
       }
 
       header {
         display: flex;
         gap: 14px;
-        align-items: flex-start;
+        align-items: center;
         justify-content: space-between;
-        margin-bottom: 18px;
       }
 
       .title {
@@ -87,6 +94,7 @@
         color: var(--muted);
         font-size: 13px;
         line-height: 1.35;
+        max-width: 70ch;
       }
 
       .pill {
@@ -105,13 +113,14 @@
         height: 8px;
         border-radius: 50%;
         background: var(--ok);
-        box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.12);
+        box-shadow: 0 0 0 4px rgba(0, 200, 83, 0.14);
       }
 
       .grid {
         display: grid;
         gap: 14px;
-        grid-template-columns: 1.15fr 0.85fr;
+        grid-template-columns: 0.95fr 1.05fr;
+        align-items: stretch;
       }
 
       @media (max-width: 900px) {
@@ -124,8 +133,12 @@
       }
 
       .card {
-        border: 1px solid var(--stroke);
-        background: linear-gradient(180deg, var(--card), rgba(255, 255, 255, 0.03));
+        border: 1px solid rgba(0, 200, 83, 0.22);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.03)
+        );
         border-radius: var(--r);
         padding: 16px;
         box-shadow: var(--shadow);
@@ -154,10 +167,10 @@
         border-radius: 14px;
         background: linear-gradient(
           140deg,
-          rgba(89, 213, 255, 0.16),
-          rgba(124, 92, 255, 0.10)
+          rgba(0, 200, 83, 0.22),
+          rgba(0, 76, 27, 0.32)
         );
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(0, 200, 83, 0.22);
       }
 
       .time {
@@ -352,7 +365,6 @@
       }
 
       footer {
-        margin-top: 18px;
         font-size: 12px;
         color: var(--faint);
         display: flex;
@@ -398,32 +410,22 @@
               <div class="date">
                 <div id="clockDate">—</div>
                 <div class="badge" id="clockTzBadge" title="Zona waktu">
-                  <strong id="clockTz">—</strong>
-                  <span id="clockOffset">—</span>
+                  <strong>WIB</strong>
+                  <span>GMT+7</span>
                 </div>
               </div>
             </div>
 
-            <div class="controls" aria-label="Pengaturan lokasi">
+            <div class="controls" aria-label="Pengaturan">
               <div class="control">
-                <label for="preset">Lokasi cepat</label>
+                <label for="preset">Kota (WIB / GMT+7)</label>
                 <div class="field">
-                  <select id="preset" aria-label="Pilih lokasi cepat">
-                    <option value="manual">Manual (koordinat)</option>
-                    <option value="-6.175392,106.827153,Asia/Jakarta">Jakarta</option>
-                    <option value="-7.801194,110.364917,Asia/Jakarta">Yogyakarta</option>
-                    <option value="-6.914744,107.609810,Asia/Jakarta">Bandung</option>
-                    <option value="-7.257472,112.752090,Asia/Jakarta">Surabaya</option>
-                    <option value="3.595196,98.672226,Asia/Jakarta">Medan</option>
-                    <option value="-5.147665,119.432732,Asia/Makassar">Makassar</option>
-                    <option value="-8.409518,115.188919,Asia/Makassar">Denpasar</option>
-                    <option value="-0.789275,113.921327,Asia/Jakarta">Indonesia (tengah)</option>
-                  </select>
+                  <select id="preset" aria-label="Pilih kota WIB"></select>
                 </div>
               </div>
 
               <div class="control">
-                <label for="madhab">Metode (madhab)</label>
+                <label for="madhab">Madhab</label>
                 <div class="field">
                   <select id="madhab" aria-label="Pilih madhab">
                     <option value="shafi">Syafi'i</option>
@@ -433,65 +435,22 @@
               </div>
 
               <div class="control">
-                <label for="lat">Latitude</label>
-                <div class="field">
-                  <input
-                    id="lat"
-                    inputmode="decimal"
-                    autocomplete="off"
-                    spellcheck="false"
-                    type="text"
-                    placeholder="-6.175392"
-                  />
-                </div>
-              </div>
-
-              <div class="control">
-                <label for="lon">Longitude</label>
-                <div class="field">
-                  <input
-                    id="lon"
-                    inputmode="decimal"
-                    autocomplete="off"
-                    spellcheck="false"
-                    type="text"
-                    placeholder="106.827153"
-                  />
-                </div>
-              </div>
-
-              <div class="control">
-                <label for="tz">Timezone (IANA)</label>
-                <div class="field">
-                  <input
-                    id="tz"
-                    autocomplete="off"
-                    spellcheck="false"
-                    type="text"
-                    placeholder="Asia/Jakarta"
-                  />
-                </div>
-              </div>
-
-              <div class="control">
                 <label class="srOnly" for="refreshBtn">Aksi</label>
                 <button id="refreshBtn" class="btn" type="button">
-                  Muat Jadwal Hari Ini
+                  Refresh Jadwal
                 </button>
               </div>
             </div>
 
             <div class="status" role="status" aria-live="polite">
               <div class="statusText" id="statusText">
-                Pilih lokasi atau isi koordinat, lalu klik “Muat Jadwal Hari Ini”.
+                Memuat jadwal sholat untuk WIB (GMT+7).
               </div>
-              <button id="useDeviceBtn" class="btn btnSecondary" type="button">
-                Pakai Lokasi Perangkat
-              </button>
+              <span class="badge" title="Timezone"><strong>Asia/Jakarta</strong>&nbsp;WIB</span>
             </div>
 
             <div class="hint">
-              Sumber jadwal: AlAdhan API (perhitungan). Untuk akurasi masjid, sesuaikan koordinat dan madhab.
+              Sumber jadwal: AlAdhan API (timings by city). Zona waktu dikunci ke WIB (GMT+7 / Asia/Jakarta).
             </div>
           </div>
         </section>
@@ -525,12 +484,40 @@
     <script>
       const $ = (id) => document.getElementById(id);
 
+      const WIB_TZ = "Asia/Jakarta";
+
+      const CITIES_WIB = [
+        { city: "Jakarta", country: "Indonesia" },
+        { city: "Bandung", country: "Indonesia" },
+        { city: "Bekasi", country: "Indonesia" },
+        { city: "Bogor", country: "Indonesia" },
+        { city: "Depok", country: "Indonesia" },
+        { city: "Tangerang", country: "Indonesia" },
+        { city: "Tangerang Selatan", country: "Indonesia" },
+        { city: "Cirebon", country: "Indonesia" },
+        { city: "Cilacap", country: "Indonesia" },
+        { city: "Semarang", country: "Indonesia" },
+        { city: "Surakarta", country: "Indonesia" },
+        { city: "Yogyakarta", country: "Indonesia" },
+        { city: "Surabaya", country: "Indonesia" },
+        { city: "Malang", country: "Indonesia" },
+        { city: "Kediri", country: "Indonesia" },
+        { city: "Madiun", country: "Indonesia" },
+        { city: "Solo", country: "Indonesia" },
+        { city: "Lampung", country: "Indonesia" },
+        { city: "Palembang", country: "Indonesia" },
+        { city: "Pekanbaru", country: "Indonesia" },
+        { city: "Padang", country: "Indonesia" },
+        { city: "Jambi", country: "Indonesia" },
+        { city: "Pontianak", country: "Indonesia" },
+      ];
+
       const state = {
-        lat: null,
-        lon: null,
-        tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+        tz: WIB_TZ,
         madhab: "shafi",
-        locationLabel: "—",
+        city: "Jakarta",
+        country: "Indonesia",
+        locationLabel: "Jakarta",
         timings: null,
       };
 
@@ -590,23 +577,6 @@
         }).format(d);
       }
 
-      function tzOffsetText(date, tz) {
-        const parts = new Intl.DateTimeFormat("en-US", {
-          timeZone: tz,
-          timeZoneName: "shortOffset",
-          hour: "2-digit",
-          minute: "2-digit",
-        }).formatToParts(date);
-        const off = parts.find((p) => p.type === "timeZoneName")?.value;
-        return off || "";
-      }
-
-      function parseNum(s) {
-        if (!s) return null;
-        const v = Number(String(s).trim().replace(",", "."));
-        return Number.isFinite(v) ? v : null;
-      }
-
       function setStatus(msg, kind = "info") {
         const el = $("statusText");
         el.textContent = msg;
@@ -620,10 +590,10 @@
 
       function savePrefs() {
         const payload = {
-          lat: state.lat,
-          lon: state.lon,
           tz: state.tz,
           madhab: state.madhab,
+          city: state.city,
+          country: state.country,
           locationLabel: state.locationLabel,
         };
         localStorage.setItem("masjid-dashboard:prefs", JSON.stringify(payload));
@@ -634,10 +604,10 @@
           const raw = localStorage.getItem("masjid-dashboard:prefs");
           if (!raw) return;
           const p = JSON.parse(raw);
-          if (typeof p?.lat === "number") state.lat = p.lat;
-          if (typeof p?.lon === "number") state.lon = p.lon;
           if (typeof p?.tz === "string") state.tz = p.tz;
           if (p?.madhab === "hanafi" || p?.madhab === "shafi") state.madhab = p.madhab;
+          if (typeof p?.city === "string") state.city = p.city;
+          if (typeof p?.country === "string") state.country = p.country;
           if (typeof p?.locationLabel === "string") state.locationLabel = p.locationLabel;
         } catch {
           // ignore
@@ -665,12 +635,13 @@
 
       function renderClock() {
         const now = new Date();
-        const tz = state.tz || "UTC";
+        const tz = WIB_TZ;
+        state.tz = WIB_TZ;
         const p = tzParts(now, tz);
         $("clockTime").textContent = p ? `${p.h}:${p.m}:${p.s}` : "--:--:--";
         $("clockDate").textContent = fmtDateLong(now, tz);
-        $("clockTz").textContent = tz;
-        $("clockOffset").textContent = tzOffsetText(now, tz);
+        $("clockTz").textContent = "WIB";
+        $("clockOffset").textContent = "GMT+7";
       }
 
       function parseTimeToDateToday(hhmm, tz) {
@@ -760,7 +731,7 @@
         $("countdown").textContent = msToHhmmss(diff);
       }
 
-      async function fetchPrayerTimes({ lat, lon, madhab }) {
+      async function fetchPrayerTimes({ city, country, madhab }) {
         const tz = state.tz || "UTC";
         const today = new Intl.DateTimeFormat("en-CA", {
           timeZone: tz,
@@ -768,15 +739,14 @@
           month: "2-digit",
           day: "2-digit",
         }).format(new Date());
-        const [yyyy, mm, dd] = today.split("-");
-        const method = 11; // "Kemenag" isn't present; use general method; UI is minimal
+        const method = 11;
         const school = madhab === "hanafi" ? 1 : 0;
 
         const url =
-          "https://api.aladhan.com/v1/timings/" +
-          `${dd}-${mm}-${yyyy}` +
-          `?latitude=${encodeURIComponent(lat)}` +
-          `&longitude=${encodeURIComponent(lon)}` +
+          "https://api.aladhan.com/v1/timingsByCity" +
+          `?city=${encodeURIComponent(city)}` +
+          `&country=${encodeURIComponent(country)}` +
+          `&date=${encodeURIComponent(today)}` +
           `&method=${encodeURIComponent(method)}` +
           `&school=${encodeURIComponent(school)}` +
           `&tune=0,0,0,0,0,0,0,0,0`;
@@ -793,23 +763,7 @@
       }
 
       async function refresh() {
-        const lat = parseNum($("lat").value);
-        const lon = parseNum($("lon").value);
-        const tz = ($("tz").value || "").trim();
         const madhab = $("madhab").value;
-
-        if (lat === null || lon === null) {
-          setStatus("Latitude/Longitude belum valid. Contoh: -6.175392 dan 106.827153", "warn");
-          return;
-        }
-        if (!tz) {
-          setStatus("Timezone belum diisi. Contoh: Asia/Jakarta", "warn");
-          return;
-        }
-
-        state.lat = lat;
-        state.lon = lon;
-        state.tz = tz;
         state.madhab = madhab;
 
         savePrefs();
@@ -817,7 +771,11 @@
         setStatus("Memuat jadwal sholat...", "info");
 
         try {
-          const { timings, meta } = await fetchPrayerTimes({ lat, lon, madhab });
+          const { timings, meta } = await fetchPrayerTimes({
+            city: state.city,
+            country: state.country,
+            madhab,
+          });
           state.timings = timings;
           renderPrayerList(timings);
           updateNextPrayerUI();
@@ -852,61 +810,46 @@
       }
 
       function applyPreset(value) {
-        if (value === "manual") return;
-        const [lat, lon, tz] = value.split(",");
-        $("lat").value = lat;
-        $("lon").value = lon;
-        $("tz").value = tz || "Asia/Jakarta";
-        state.locationLabel = $("preset").selectedOptions?.[0]?.textContent || "Preset";
+        const idx = Number(value);
+        const selected = CITIES_WIB[idx];
+        if (!selected) return;
+        state.city = selected.city;
+        state.country = selected.country;
+        state.locationLabel = selected.city;
         savePrefs();
         renderLocationBadge();
       }
 
-      async function useDeviceLocation() {
-        if (!navigator.geolocation) {
-          setStatus("Browser tidak mendukung geolocation.", "warn");
-          return;
-        }
-
-        setStatus("Mengambil lokasi perangkat...", "info");
-        return new Promise((resolve) => {
-          navigator.geolocation.getCurrentPosition(
-            (pos) => {
-              const lat = pos.coords.latitude;
-              const lon = pos.coords.longitude;
-              $("lat").value = String(lat.toFixed(6));
-              $("lon").value = String(lon.toFixed(6));
-              if (!$("tz").value.trim()) $("tz").value = state.tz || "Asia/Jakarta";
-              state.locationLabel = "Lokasi Perangkat";
-              savePrefs();
-              renderLocationBadge();
-              setStatus("Lokasi perangkat dipakai. Klik “Muat Jadwal Hari Ini”.", "info");
-              resolve();
-            },
-            () => {
-              setStatus("Izin lokasi ditolak atau gagal diambil.", "warn");
-              resolve();
-            },
-            { enableHighAccuracy: false, timeout: 8000, maximumAge: 60_000 }
-          );
-        });
-      }
-
       function hydrateFromState() {
         $("madhab").value = state.madhab;
-        $("tz").value = state.tz || "Asia/Jakarta";
-        if (typeof state.lat === "number") $("lat").value = String(state.lat);
-        if (typeof state.lon === "number") $("lon").value = String(state.lon);
+        state.tz = WIB_TZ;
+        // fill city select
+        const sel = $("preset");
+        sel.innerHTML = "";
+        CITIES_WIB.forEach((c, i) => {
+          const opt = document.createElement("option");
+          opt.value = String(i);
+          opt.textContent = c.city;
+          sel.appendChild(opt);
+        });
+        const currentIdx = Math.max(
+          0,
+          CITIES_WIB.findIndex((c) => c.city === state.city && c.country === state.country)
+        );
+        sel.value = String(currentIdx >= 0 ? currentIdx : 0);
         renderLocationBadge();
       }
 
       function wire() {
         $("refreshBtn").addEventListener("click", refresh);
-        $("useDeviceBtn").addEventListener("click", useDeviceLocation);
-        $("preset").addEventListener("change", (e) => applyPreset(e.target.value));
+        $("preset").addEventListener("change", (e) => {
+          applyPreset(e.target.value);
+          refresh();
+        });
         $("madhab").addEventListener("change", () => {
           state.madhab = $("madhab").value;
           savePrefs();
+          refresh();
         });
 
         window.addEventListener("keydown", (e) => {
