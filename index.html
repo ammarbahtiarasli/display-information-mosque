@@ -77,16 +77,24 @@
         gap: 14px;
         align-items: center;
         justify-content: space-between;
+        padding: 14px 16px;
+        border-radius: var(--r);
+        border: 1px solid rgba(0, 200, 83, 0.22);
+        background: linear-gradient(
+          180deg,
+          rgba(0, 200, 83, 0.14),
+          rgba(0, 76, 27, 0.10)
+        );
       }
 
       .title {
         display: grid;
-        gap: 6px;
+        gap: 4px;
       }
 
       .title h1 {
         margin: 0;
-        font-size: clamp(20px, 2.5vw, 28px);
+        font-size: clamp(22px, 3.2vw, 36px);
         letter-spacing: 0.2px;
       }
 
@@ -119,8 +127,10 @@
       .grid {
         display: grid;
         gap: 14px;
-        grid-template-columns: 0.95fr 1.05fr;
+        grid-template-columns: 1fr 1fr;
         align-items: stretch;
+        min-height: 0;
+        height: 100%;
       }
 
       @media (max-width: 900px) {
@@ -143,6 +153,9 @@
         padding: 16px;
         box-shadow: var(--shadow);
         overflow: hidden;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
       }
 
       .card h2 {
@@ -156,6 +169,9 @@
       .clock {
         display: grid;
         gap: 10px;
+        height: 100%;
+        min-height: 0;
+        grid-template-rows: auto auto auto 1fr;
       }
 
       .clockRow {
@@ -175,7 +191,7 @@
 
       .time {
         font-family: var(--mono);
-        font-size: clamp(34px, 5vw, 44px);
+        font-size: clamp(44px, 7vw, 72px);
         font-weight: 750;
         letter-spacing: 0.5px;
       }
@@ -185,6 +201,69 @@
         font-size: 13px;
         line-height: 1.35;
         text-align: right;
+      }
+
+      .date #clockDate {
+        font-weight: 650;
+      }
+
+      .clockMetaRow {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .bigNext {
+        border: 1px solid rgba(0, 200, 83, 0.22);
+        background: linear-gradient(
+          140deg,
+          rgba(0, 76, 27, 0.22),
+          rgba(0, 200, 83, 0.12)
+        );
+        border-radius: 16px;
+        padding: 14px;
+      }
+
+      .bigNextTop {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 6px;
+      }
+
+      .bigNextLabel {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .bigNextName {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+
+      .bigNextTime {
+        font-family: var(--mono);
+        font-size: 22px;
+        font-weight: 850;
+      }
+
+      .bigCountdown {
+        font-family: var(--mono);
+        font-size: clamp(26px, 3.4vw, 38px);
+        font-weight: 900;
+        letter-spacing: 0.4px;
+        color: rgba(255, 255, 255, 0.95);
+      }
+
+      .bigNextSub {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 8px;
+        flex-wrap: wrap;
       }
 
       .row {
@@ -214,9 +293,10 @@
 
       .controls {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1.4fr 1fr auto;
         gap: 12px;
         margin-top: 10px;
+        align-items: end;
       }
 
       @media (max-width: 540px) {
@@ -255,11 +335,11 @@
         gap: 10px;
         padding: 11px 12px;
         border-radius: 12px;
-        border: 1px solid rgba(89, 213, 255, 0.25);
+        border: 1px solid rgba(0, 200, 83, 0.28);
         background: linear-gradient(
           140deg,
-          rgba(89, 213, 255, 0.18),
-          rgba(124, 92, 255, 0.12)
+          rgba(0, 200, 83, 0.22),
+          rgba(0, 76, 27, 0.18)
         );
         cursor: pointer;
         transition: transform 0.06s ease, filter 0.2s ease;
@@ -287,13 +367,20 @@
       }
 
       .stack {
-        display: grid;
+        display: flex;
+        flex-direction: column;
         gap: 12px;
+        height: 100%;
+        min-height: 0;
       }
 
       .prayerList {
         display: grid;
-        gap: 8px;
+        gap: 10px;
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        padding-right: 4px;
       }
 
       .prayerItem {
@@ -301,9 +388,9 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        padding: 12px 12px;
+        padding: 14px 14px;
         border-radius: 14px;
-        border: 1px solid var(--stroke);
+        border: 1px solid rgba(0, 200, 83, 0.16);
         background: rgba(255, 255, 255, 0.04);
       }
 
@@ -328,6 +415,27 @@
         font-weight: 750;
         letter-spacing: 0.3px;
         color: rgba(255, 255, 255, 0.92);
+        font-size: 18px;
+      }
+
+      .scrollbar {
+        scrollbar-color: rgba(0, 200, 83, 0.55) rgba(255, 255, 255, 0.08);
+        scrollbar-width: thin;
+      }
+
+      .scrollbar::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      .scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(0, 200, 83, 0.55);
+        border-radius: 999px;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .scrollbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 999px;
       }
 
       .badge {
@@ -390,9 +498,9 @@
     <div class="container">
       <header>
         <div class="title">
-          <h1>Dashboard Informasi Masjid</h1>
+          <h1>Masjid Jami' Al-Karomah</h1>
           <div class="subtitle">
-            Jam realtime + jadwal sholat harian. Desain sederhana, jelas, dan enak dibaca di TV maupun HP.
+            Kaca-kaca Pamijahan • Jam realtime WIB & jadwal sholat harian
           </div>
         </div>
         <div class="pill" title="Status">
