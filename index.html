@@ -175,13 +175,168 @@
         overflow: hidden;
       }
 
-      @media (max-width: 800px) {
+      /* ════════════════════════════════════════════════════════════
+         RESPONSIVE BREAKPOINTS
+         ≥1920px  → TV / large display
+         1024–1919px → desktop / laptop  (base styles above)
+         600–1023px  → tablet
+         <600px       → smartphone
+      ════════════════════════════════════════════════════════════ */
+
+      /* ── TV / Large display (≥1920px) ───────────────────────── */
+      @media (min-width: 1920px) {
+        .topbar { padding: 18px 48px; }
+        .mosque-icon { width: 80px; height: 80px; }
+        .mosque-text h1 { font-size: 44px; }
+        .mosque-addr { font-size: 20px; }
+        .header-date #headerDate { font-size: 26px; }
+        .header-hijri { font-size: 20px; }
+        .live-chip { font-size: 18px; padding: 12px 24px; }
+
+        .content { gap: 20px; padding: 20px 48px; }
+        .card-header { font-size: 17px; padding: 14px 28px; }
+
+        .clock-time { font-size: 144px; }
+        .clock-date { font-size: 36px; }
+        .clock-hijri { font-size: 26px; }
+        .next-name { font-size: 46px; }
+        .next-time { font-size: 40px; }
+        .countdown { font-size: 80px; }
+
+        .pr-num { width: 68px; height: 68px; font-size: 22px; }
+        .pr-name { font-size: 46px; }
+        .pr-arabic { font-size: 20px; }
+        .pr-imam { font-size: 18px; }
+        .pr-time { font-size: 76px; }
+
+        .ticker { height: 90px; }
+        .ticker-tag { font-size: 28px; padding: 0 40px; }
+        .ticker-inner { font-size: 32px; }
+      }
+
+      /* ── Tablet (600px – 1023px) ─────────────────────────────── */
+      @media (max-width: 1023px) and (min-width: 600px) {
+        .topbar { padding: 10px 16px; gap: 10px; }
+        .mosque-icon { width: 48px; height: 48px; border-radius: 10px; }
+        .mosque-text h1 { font-size: clamp(16px, 2.4vw, 22px); }
+        .mosque-addr { font-size: clamp(11px, 1.5vw, 14px); }
+        .header-date #headerDate { font-size: clamp(13px, 1.6vw, 16px); }
+        .header-hijri { font-size: clamp(11px, 1.3vw, 14px); }
+        .live-chip { font-size: 13px; padding: 7px 14px; }
+
+        .content { gap: 10px; padding: 10px 16px; grid-template-columns: 1fr 1fr; }
+        .card-header { font-size: 12px; padding: 9px 16px; }
+
+        .clock-block { padding: 12px 12px 10px; }
+        .clock-time { font-size: clamp(48px, 8vw, 72px); }
+        .clock-date { font-size: clamp(14px, 2vw, 20px); }
+        .clock-hijri { font-size: clamp(12px, 1.6vw, 17px); }
+        .tz-tag { font-size: 12px; margin-top: 8px; padding: 4px 14px; }
+
+        .next-block { padding: 10px 14px 10px; }
+        .next-name { font-size: clamp(18px, 2.4vw, 26px); }
+        .next-time { font-size: clamp(16px, 2vw, 22px); }
+        .countdown { font-size: clamp(28px, 4vw, 44px); }
+        .countdown-cap { font-size: 12px; }
+
+        .ctrl-strip { padding: 8px 14px; gap: 8px; }
+        select { font-size: 13px; padding: 6px 8px; }
+        .ctrl-btn { font-size: 13px; padding: 8px 16px; }
+
+        .prayer-row { gap: 10px; padding: 0 14px; }
+        .pr-num { width: 40px; height: 40px; font-size: 14px; border-radius: 9px; }
+        .pr-name { font-size: clamp(16px, 2.2vw, 22px); }
+        .pr-arabic { font-size: clamp(10px, 1.1vw, 13px); }
+        .pr-imam { font-size: clamp(9px, 1vw, 12px); margin-top: 3px; }
+        .pr-time { font-size: clamp(24px, 3.4vw, 38px); }
+        .pr-badge { font-size: 9px; padding: 2px 8px; }
+
+        .ticker { height: 56px; }
+        .ticker-tag { font-size: 16px; padding: 0 18px; }
+        .ticker-inner { font-size: 18px; }
+
+        .bottombar { padding: 4px 16px; }
+        .status-txt, .footer-meta { font-size: 11px; }
+      }
+
+      /* ── Smartphone (<600px) ─────────────────────────────────── */
+      @media (max-width: 599px) {
+        html, body { overflow: auto; }
+        .root { height: auto; min-height: 100dvh; overflow: visible; }
+
+        .topbar {
+          padding: 8px 12px;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .mosque-id { gap: 8px; }
+        .mosque-icon { width: 40px; height: 40px; border-radius: 9px; }
+        .mosque-text h1 { font-size: 15px; }
+        .mosque-addr { font-size: 11px; }
+        .topbar-right { gap: 6px; }
+        .header-date #headerDate { font-size: 12px; }
+        .header-hijri { font-size: 10px; }
+        .live-chip { font-size: 11px; padding: 5px 10px; gap: 5px; }
+        .live-dot { width: 6px; height: 6px; }
+
         .content {
           grid-template-columns: 1fr;
-          overflow-y: auto;
+          gap: 10px;
+          padding: 10px 12px;
+          overflow: visible;
+          height: auto;
         }
-        html, body { overflow: auto; }
-        .root { height: auto; min-height: 100dvh; }
+
+        .card { height: auto; overflow: visible; }
+
+        .card-header { font-size: 11px; padding: 8px 14px; letter-spacing: .8px; }
+
+        .clock-block { padding: 16px 12px 12px; }
+        .clock-time { font-size: clamp(52px, 15vw, 72px); letter-spacing: 2px; }
+        .clock-date { font-size: clamp(13px, 3.5vw, 17px); margin-top: 6px; }
+        .clock-hijri { font-size: clamp(11px, 2.8vw, 14px); }
+        .tz-tag { font-size: 11px; padding: 3px 12px; margin-top: 8px; }
+
+        .next-block { padding: 10px 12px; }
+        .next-lbl { font-size: 10px; margin-bottom: 5px; }
+        .next-name { font-size: clamp(20px, 5.5vw, 26px); }
+        .next-time { font-size: clamp(18px, 4.5vw, 22px); }
+        .countdown { font-size: clamp(36px, 10vw, 48px); letter-spacing: 1px; }
+        .countdown-cap { font-size: 11px; }
+
+        .ctrl-strip { padding: 8px 12px; gap: 6px; }
+        .ctrl-grp { min-width: 90px; }
+        .ctrl-lbl { font-size: 10px; }
+        select { font-size: 13px; padding: 6px 8px; }
+        .ctrl-btn { font-size: 13px; padding: 8px 14px; }
+
+        .prayer-list { overflow: visible; }
+        .prayer-row {
+          flex: none;
+          min-height: 64px;
+          padding: 10px 12px;
+          gap: 10px;
+        }
+        .pr-num { width: 36px; height: 36px; font-size: 13px; border-radius: 8px; }
+        .pr-name { font-size: clamp(18px, 5vw, 22px); }
+        .pr-arabic { font-size: clamp(10px, 2.5vw, 13px); margin-top: 2px; }
+        .pr-imam { font-size: clamp(9px, 2.2vw, 11px); margin-top: 2px; }
+        .pr-time { font-size: clamp(26px, 7.5vw, 34px); }
+        .pr-badge { font-size: 9px; padding: 2px 8px; }
+
+        .ticker { height: 48px; flex-shrink: 0; }
+        .ticker-tag { font-size: 13px; padding: 0 14px; }
+        .ticker-inner { font-size: 14px; animation-duration: 45s; }
+
+        .bottombar { padding: 4px 12px; flex-wrap: wrap; gap: 4px; }
+        .status-txt, .footer-meta { font-size: 10px; }
+        .footer-meta { gap: 8px; white-space: normal; }
+
+        .notif-box { padding: 28px 24px; }
+        .notif-title { font-size: clamp(26px, 7vw, 36px); }
+        .notif-prayer { font-size: clamp(20px, 5.5vw, 28px); }
+        .notif-sub { font-size: clamp(13px, 3.5vw, 16px); }
+        .notif-dismiss { margin-top: 20px; padding: 10px 28px; font-size: 14px; }
       }
 
       /* ── Card ───────────────────────────────────────────────── */
