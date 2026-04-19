@@ -120,10 +120,24 @@
       }
 
       .header-date {
-        font-size: clamp(16px, 1.8vw, 22px);
-        color: var(--sub);
         text-align: right;
         line-height: 1.4;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        align-items: flex-end;
+      }
+
+      .header-date #headerDate {
+        font-size: clamp(16px, 1.8vw, 22px);
+        color: var(--sub);
+        font-weight: 600;
+      }
+
+      .header-hijri {
+        font-size: clamp(13px, 1.3vw, 17px);
+        color: var(--green-mid);
+        font-weight: 700;
       }
 
       .live-chip {
@@ -678,7 +692,10 @@
           </div>
         </div>
         <div class="topbar-right">
-          <div class="header-date" id="headerDate">—</div>
+          <div class="header-date">
+            <div id="headerDate">—</div>
+            <div class="header-hijri" id="headerHijri">—</div>
+          </div>
           <div class="live-chip" aria-label="Status live">
             <span class="live-dot" aria-hidden="true"></span>
             LIVE
@@ -879,7 +896,8 @@
         $('clockDate').textContent  = d;
         $('headerDate').textContent = d;
         const h = dateHijri();
-        if ($('clockHijri')) $('clockHijri').textContent = h;
+        if ($('clockHijri'))  $('clockHijri').textContent  = h;
+        if ($('headerHijri')) $('headerHijri').textContent = h;
       }
 
       /* next */
