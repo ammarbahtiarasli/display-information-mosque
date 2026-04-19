@@ -3,887 +3,855 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark light" />
-    <title>Dashboard Masjid</title>
+    <title>Dashboard Masjid Jami' Al-Karomah</title>
     <style>
+      /* ── Reset & base ──────────────────────────────────────────── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
       :root {
-        --g0: #00c853;
-        --g1: #004c1b;
-
-        --bg0: #06120a;
-        --bg1: #04140a;
-        --card: rgba(255, 255, 255, 0.06);
-        --card2: rgba(255, 255, 255, 0.09);
-        --stroke: rgba(255, 255, 255, 0.12);
-        --text: rgba(255, 255, 255, 0.92);
-        --muted: rgba(255, 255, 255, 0.74);
-        --faint: rgba(255, 255, 255, 0.58);
-
-        --brand: var(--g0);
-        --brand2: var(--g1);
-        --ok: var(--g0);
-        --warn: #fbbf24;
-        --danger: #fb7185;
-        --shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-        --r: 20px;
-        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
-        --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
-          Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        --g0: #00c853;          /* hijau terang */
+        --g1: #004c1b;          /* hijau gelap */
+        --g0a: rgba(0,200,83,.18);
+        --g1a: rgba(0,76,27,.35);
+        --bg: #061009;
+        --card-bg: rgba(255,255,255,.055);
+        --card-bg2: rgba(0,200,83,.06);
+        --stroke: rgba(0,200,83,.22);
+        --stroke2: rgba(255,255,255,.1);
+        --text: rgba(255,255,255,.92);
+        --sub:  rgba(255,255,255,.72);
+        --dim:  rgba(255,255,255,.45);
+        --shadow: 0 8px 32px rgba(0,0,0,.45);
+        --r: 18px;
+        --rSm: 12px;
+        --mono: ui-monospace, 'Cascadia Code', SFMono-Regular, Menlo, Consolas, monospace;
+        --sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
-      html,
-      body {
+      html, body {
         height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
       }
 
       body {
-        margin: 0;
-        font-family: var(--sans);
-        color: var(--text);
-        background: radial-gradient(
-            1200px 900px at 15% 12%,
-            rgba(0, 200, 83, 0.18),
-            transparent 55%
-          ),
-          radial-gradient(
-            900px 700px at 85% 20%,
-            rgba(0, 76, 27, 0.35),
-            transparent 60%
-          ),
-          linear-gradient(160deg, var(--bg0), var(--bg1));
+        background:
+          radial-gradient(ellipse 80vw 60vh at 10% 0%,  var(--g0a), transparent),
+          radial-gradient(ellipse 60vw 50vh at 90% 80%, var(--g1a), transparent),
+          var(--bg);
       }
 
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .container {
-        min-height: 100vh;
-        width: 100%;
-        padding: clamp(14px, 2.2vw, 22px);
+      /* ── Root layout: header / main / footer ───────────────────── */
+      .root {
+        height: 100dvh;
         display: grid;
-        grid-template-rows: auto 1fr;
-        gap: 14px;
-      }
-
-      header {
-        display: flex;
-        gap: 14px;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .title {
-        display: grid;
-        gap: 6px;
-      }
-
-      .title h1 {
-        margin: 0;
-        font-size: clamp(20px, 2.5vw, 28px);
-        letter-spacing: 0.2px;
-      }
-
-      .subtitle {
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.35;
-        max-width: 70ch;
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 12px;
-        border: 1px solid var(--stroke);
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 999px;
-        box-shadow: var(--shadow);
-      }
-
-      .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--ok);
-        box-shadow: 0 0 0 4px rgba(0, 200, 83, 0.14);
-      }
-
-      .grid {
-        display: grid;
-        gap: 14px;
-        grid-template-columns: 0.95fr 1.05fr;
-        align-items: stretch;
-      }
-
-      @media (max-width: 900px) {
-        .grid {
-          grid-template-columns: 1fr;
-        }
-        header {
-          flex-direction: column;
-        }
-      }
-
-      .card {
-        border: 1px solid rgba(0, 200, 83, 0.22);
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.06),
-          rgba(255, 255, 255, 0.03)
-        );
-        border-radius: var(--r);
-        padding: 16px;
-        box-shadow: var(--shadow);
+        grid-template-rows: auto 1fr auto;
+        gap: 0;
         overflow: hidden;
       }
 
-      .card h2 {
-        margin: 0 0 10px;
-        font-size: 14px;
-        letter-spacing: 0.3px;
-        color: rgba(255, 255, 255, 0.84);
-        font-weight: 650;
-      }
-
-      .clock {
-        display: grid;
-        gap: 10px;
-      }
-
-      .clockRow {
+      /* ── Header ─────────────────────────────────────────────────── */
+      .topbar {
         display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 14px;
-        padding: 14px;
-        border-radius: 14px;
-        background: linear-gradient(
-          140deg,
-          rgba(0, 200, 83, 0.22),
-          rgba(0, 76, 27, 0.32)
-        );
-        border: 1px solid rgba(0, 200, 83, 0.22);
-      }
-
-      .time {
-        font-family: var(--mono);
-        font-size: clamp(34px, 5vw, 44px);
-        font-weight: 750;
-        letter-spacing: 0.5px;
-      }
-
-      .date {
-        color: rgba(255, 255, 255, 0.82);
-        font-size: 13px;
-        line-height: 1.35;
-        text-align: right;
-      }
-
-      .row {
-        display: flex;
-        gap: 10px;
         align-items: center;
         justify-content: space-between;
-        flex-wrap: wrap;
+        gap: 16px;
+        padding: 14px 22px;
+        background: linear-gradient(180deg, rgba(0,200,83,.18), rgba(0,200,83,.06));
+        border-bottom: 1px solid var(--stroke);
       }
 
-      label {
-        font-size: 12px;
-        color: var(--faint);
+      .mosque-identity {
+        display: flex;
+        align-items: center;
+        gap: 14px;
       }
 
-      select,
-      input[type="text"],
-      button {
-        font: inherit;
-        color: var(--text);
-      }
-
-      .controlGroup {
+      .mosque-icon {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
         display: grid;
-        gap: 8px;
+        place-items: center;
+        background: linear-gradient(135deg, var(--g1), rgba(0,200,83,.3));
+        border: 1px solid var(--stroke);
+        border-radius: 50%;
+        font-size: 22px;
       }
 
-      .controls {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-top: 10px;
+      .mosque-text h1 {
+        font-size: clamp(18px, 2.4vw, 28px);
+        font-weight: 800;
+        letter-spacing: .3px;
+        line-height: 1.15;
       }
 
-      @media (max-width: 540px) {
-        .controls {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .control {
-        display: grid;
+      .mosque-text .addr {
+        font-size: clamp(11px, 1.2vw, 14px);
+        color: var(--sub);
+        margin-top: 2px;
+        display: flex;
+        align-items: center;
         gap: 6px;
       }
 
-      .field {
+      .mosque-text .addr::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--g0);
+        flex-shrink: 0;
+      }
+
+      .topbar-right {
         display: flex;
-        gap: 10px;
         align-items: center;
-        padding: 10px 12px;
-        border-radius: 12px;
-        border: 1px solid var(--stroke);
-        background: rgba(255, 255, 255, 0.04);
+        gap: 12px;
+        flex-shrink: 0;
       }
 
-      .field input,
-      .field select {
-        width: 100%;
-        border: 0;
-        outline: none;
-        background: transparent;
-      }
-
-      .btn {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        padding: 11px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(89, 213, 255, 0.25);
-        background: linear-gradient(
-          140deg,
-          rgba(89, 213, 255, 0.18),
-          rgba(124, 92, 255, 0.12)
-        );
-        cursor: pointer;
-        transition: transform 0.06s ease, filter 0.2s ease;
-        user-select: none;
-      }
-
-      .btn:active {
-        transform: translateY(1px);
-      }
-
-      .btn:hover {
-        filter: brightness(1.06);
-      }
-
-      .btnSecondary {
-        border: 1px solid var(--stroke);
-        background: rgba(255, 255, 255, 0.04);
-      }
-
-      .hint {
-        margin-top: 10px;
-        font-size: 12px;
-        color: var(--muted);
+      .topbar-date {
+        text-align: right;
+        font-size: clamp(11px, 1.1vw, 13px);
+        color: var(--sub);
         line-height: 1.4;
       }
 
-      .stack {
-        display: grid;
-        gap: 12px;
-      }
-
-      .prayerList {
-        display: grid;
-        gap: 8px;
-      }
-
-      .prayerItem {
+      .live-pill {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 12px 12px;
-        border-radius: 14px;
-        border: 1px solid var(--stroke);
-        background: rgba(255, 255, 255, 0.04);
-      }
-
-      .prayerLeft {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-
-      .prayerName {
-        font-weight: 700;
-        letter-spacing: 0.2px;
-      }
-
-      .prayerMeta {
-        font-size: 12px;
-        color: var(--muted);
-      }
-
-      .prayerTime {
-        font-family: var(--mono);
-        font-weight: 750;
-        letter-spacing: 0.3px;
-        color: rgba(255, 255, 255, 0.92);
-      }
-
-      .badge {
-        display: inline-flex;
-        align-items: center;
         gap: 8px;
-        padding: 6px 10px;
+        padding: 7px 14px;
         border-radius: 999px;
         border: 1px solid var(--stroke);
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(0,200,83,.1);
         font-size: 12px;
-        color: var(--muted);
+        color: var(--sub);
         white-space: nowrap;
       }
 
-      .badge strong {
-        color: rgba(255, 255, 255, 0.9);
+      .live-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--g0);
+        box-shadow: 0 0 0 4px rgba(0,200,83,.2);
+        animation: pulse 2s ease-in-out infinite;
       }
 
-      .status {
+      @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(0,200,83,.2); }
+        50%       { box-shadow: 0 0 0 8px rgba(0,200,83,.05); }
+      }
+
+      /* ── Main content ───────────────────────────────────────────── */
+      .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        padding: 16px 22px;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      @media (max-width: 860px) {
+        .content { grid-template-columns: 1fr; overflow: auto; }
+        .root { height: auto; min-height: 100dvh; }
+      }
+
+      /* ── Card base ──────────────────────────────────────────────── */
+      .panel {
+        background: var(--card-bg);
+        border: 1px solid var(--stroke);
+        border-radius: var(--r);
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .panel-head {
+        padding: 14px 18px 10px;
+        border-bottom: 1px solid var(--stroke2);
+        flex-shrink: 0;
+      }
+
+      .panel-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: var(--g0);
+        font-weight: 700;
+      }
+
+      /* ── Left panel: clock ──────────────────────────────────────── */
+      .left-panel { gap: 0; }
+
+      .clock-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 18px 20px 12px;
+        gap: 6px;
+        background: linear-gradient(180deg, rgba(0,200,83,.12), rgba(0,76,27,.18));
+      }
+
+      .clock-time {
+        font-family: var(--mono);
+        font-size: clamp(64px, 10vw, 100px);
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: #fff;
+        line-height: 1;
+        text-shadow: 0 0 40px rgba(0,200,83,.45);
+      }
+
+      .clock-date-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .clock-date {
+        font-size: clamp(13px, 1.4vw, 16px);
+        color: var(--sub);
+        font-weight: 500;
+      }
+
+      .tz-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--stroke);
+        background: rgba(0,200,83,.12);
+        font-size: 11px;
+        color: var(--g0);
+        font-weight: 700;
+        letter-spacing: .5px;
+      }
+
+      /* ── Next prayer banner ─────────────────────────────────────── */
+      .next-area {
+        padding: 14px 20px;
+        background: linear-gradient(135deg, rgba(0,76,27,.28), rgba(0,200,83,.14));
+        border-top: 1px solid var(--stroke);
+        flex-shrink: 0;
+      }
+
+      .next-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--sub);
+        margin-bottom: 6px;
+      }
+
+      .next-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .next-name {
+        font-size: clamp(22px, 2.8vw, 30px);
+        font-weight: 800;
+        color: var(--g0);
+        letter-spacing: .2px;
+      }
+
+      .next-time {
+        font-family: var(--mono);
+        font-size: clamp(20px, 2.4vw, 26px);
+        font-weight: 700;
+        color: rgba(255,255,255,.88);
+      }
+
+      .countdown-row {
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .countdown {
+        font-family: var(--mono);
+        font-size: clamp(28px, 3.8vw, 44px);
+        font-weight: 900;
+        letter-spacing: 1px;
+        color: #fff;
+      }
+
+      .countdown-sub {
+        font-size: 12px;
+        color: var(--sub);
+      }
+
+      /* ── Controls strip ─────────────────────────────────────────── */
+      .controls-strip {
+        padding: 12px 20px;
+        border-top: 1px solid var(--stroke2);
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        background: rgba(0,0,0,.15);
+        flex-shrink: 0;
+      }
+
+      .ctrl-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 120px; }
+      .ctrl-label { font-size: 10px; text-transform: uppercase; letter-spacing: .8px; color: var(--dim); }
+
+      select {
+        font: inherit;
+        color: var(--text);
+        background: rgba(255,255,255,.07);
+        border: 1px solid var(--stroke2);
+        border-radius: var(--rSm);
+        padding: 8px 10px;
+        outline: none;
+        width: 100%;
+        cursor: pointer;
+        appearance: auto;
+      }
+
+      select:focus { border-color: var(--g0); }
+
+      .ctrl-btn {
+        padding: 9px 18px;
+        border-radius: var(--rSm);
+        border: 1px solid var(--stroke);
+        background: linear-gradient(135deg, rgba(0,200,83,.25), rgba(0,76,27,.2));
+        color: var(--text);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition: filter .15s;
+        white-space: nowrap;
+        align-self: flex-end;
+      }
+      .ctrl-btn:hover  { filter: brightness(1.1); }
+      .ctrl-btn:active { transform: translateY(1px); }
+
+      /* ── Right panel: prayer schedule ───────────────────────────── */
+      .right-panel { }
+
+      .prayer-grid {
+        flex: 1;
+        display: grid;
+        grid-template-rows: repeat(5, 1fr);
+        gap: 0;
+        padding: 0;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .prayer-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 10px;
-        padding: 10px 12px;
-        border-radius: 14px;
-        border: 1px dashed rgba(255, 255, 255, 0.22);
-        background: rgba(255, 255, 255, 0.03);
+        gap: 16px;
+        padding: 0 20px;
+        border-bottom: 1px solid var(--stroke2);
+        transition: background .2s;
+        position: relative;
+        overflow: hidden;
       }
 
-      .statusText {
-        font-size: 12px;
-        color: var(--muted);
-        line-height: 1.3;
+      .prayer-row:last-child { border-bottom: none; }
+
+      .prayer-row::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(0,200,83,.0), rgba(0,200,83,.0));
+        transition: background .3s;
       }
 
-      footer {
-        font-size: 12px;
-        color: var(--faint);
+      .prayer-row.is-next {
+        background: linear-gradient(90deg, rgba(0,200,83,.14), rgba(0,76,27,.12));
+        border-left: 4px solid var(--g0);
+      }
+
+      .prayer-row.is-next::before {
+        background: linear-gradient(90deg, rgba(0,200,83,.06), rgba(0,200,83,.0));
+      }
+
+      .prayer-row.is-done {
+        opacity: .55;
+      }
+
+      .pr-left {
         display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .pr-icon {
+        width: 42px; height: 42px;
+        flex-shrink: 0;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+        background: rgba(0,200,83,.1);
+        border: 1px solid var(--stroke);
+      }
+
+      .prayer-row.is-next .pr-icon {
+        background: rgba(0,200,83,.22);
+        border-color: var(--g0);
+      }
+
+      .pr-info { display: flex; flex-direction: column; gap: 2px; }
+
+      .pr-name {
+        font-size: clamp(16px, 1.8vw, 22px);
+        font-weight: 800;
+        letter-spacing: .2px;
+      }
+
+      .pr-arabic {
+        font-size: clamp(10px, 1vw, 13px);
+        color: var(--sub);
+      }
+
+      .prayer-row.is-next .pr-name { color: var(--g0); }
+
+      .pr-time {
+        font-family: var(--mono);
+        font-size: clamp(24px, 2.8vw, 36px);
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: rgba(255,255,255,.92);
+        flex-shrink: 0;
+      }
+
+      .prayer-row.is-next .pr-time { color: var(--g0); }
+
+      .pr-next-badge {
+        display: none;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--g0);
+        background: rgba(0,200,83,.12);
+        border: 1px solid rgba(0,200,83,.3);
+        border-radius: 999px;
+        padding: 2px 8px;
+        white-space: nowrap;
+      }
+
+      .prayer-row.is-next .pr-next-badge { display: inline-block; }
+
+      /* ── Footer ─────────────────────────────────────────────────── */
+      .bottombar {
+        display: flex;
+        align-items: center;
         justify-content: space-between;
-        gap: 10px;
-        flex-wrap: wrap;
+        gap: 16px;
+        padding: 8px 22px;
+        border-top: 1px solid var(--stroke2);
+        background: rgba(0,0,0,.2);
+        flex-shrink: 0;
+      }
+
+      .status-text {
+        font-size: 11px;
+        color: var(--dim);
+      }
+
+      .bottom-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 11px;
+        color: var(--dim);
       }
 
       .srOnly {
         position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
+        width: 1px; height: 1px;
+        padding: 0; margin: -1px;
         overflow: hidden;
-        clip: rect(0, 0, 0, 0);
+        clip: rect(0,0,0,0);
         white-space: nowrap;
         border-width: 0;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <header>
-        <div class="title">
-          <h1>Dashboard Informasi Masjid</h1>
-          <div class="subtitle">
-            Jam realtime + jadwal sholat harian. Desain sederhana, jelas, dan enak dibaca di TV maupun HP.
+    <div class="root">
+
+      <!-- ─── TOP BAR ─────────────────────────────────────── -->
+      <header class="topbar" role="banner">
+        <div class="mosque-identity">
+          <div class="mosque-icon" aria-hidden="true">🕌</div>
+          <div class="mosque-text">
+            <h1>Masjid Jami' Al-Karomah</h1>
+            <div class="addr">Kaca-kaca Pamijahan</div>
           </div>
         </div>
-        <div class="pill" title="Status">
-          <span class="dot" aria-hidden="true"></span>
-          <span style="font-size: 12px; color: var(--muted)">Siap</span>
+        <div class="topbar-right">
+          <div class="topbar-date" id="headerDate">—</div>
+          <div class="live-pill" aria-label="Status: Live">
+            <span class="live-dot" aria-hidden="true"></span>
+            Live
+          </div>
         </div>
       </header>
 
-      <main class="grid" aria-label="Konten dashboard">
-        <section class="card" aria-label="Jam dan pengaturan">
-          <h2>Waktu Saat Ini</h2>
-          <div class="clock">
-            <div class="clockRow">
-              <div class="time" id="clockTime">--:--:--</div>
-              <div class="date">
-                <div id="clockDate">—</div>
-                <div class="badge" id="clockTzBadge" title="Zona waktu">
-                  <strong>WIB</strong>
-                  <span>GMT+7</span>
-                </div>
-              </div>
+      <!-- ─── MAIN CONTENT ─────────────────────────────────── -->
+      <main class="content" aria-label="Dashboard utama">
+
+        <!-- ── LEFT: Jam + Next sholat + Kontrol ─────────── -->
+        <section class="panel left-panel" aria-label="Jam dan info sholat berikutnya">
+
+          <!-- Big clock -->
+          <div class="clock-area">
+            <div class="clock-time" id="clockTime">--:--:--</div>
+            <div class="clock-date-row">
+              <div class="clock-date" id="clockDate">—</div>
+              <div class="tz-badge">WIB · GMT+7</div>
             </div>
+          </div>
 
-            <div class="controls" aria-label="Pengaturan">
-              <div class="control">
-                <label for="preset">Kota (WIB / GMT+7)</label>
-                <div class="field">
-                  <select id="preset" aria-label="Pilih kota WIB"></select>
-                </div>
-              </div>
-
-              <div class="control">
-                <label for="madhab">Madhab</label>
-                <div class="field">
-                  <select id="madhab" aria-label="Pilih madhab">
-                    <option value="shafi">Syafi'i</option>
-                    <option value="hanafi">Hanafi</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="control">
-                <label class="srOnly" for="refreshBtn">Aksi</label>
-                <button id="refreshBtn" class="btn" type="button">
-                  Refresh Jadwal
-                </button>
-              </div>
+          <!-- Next prayer banner -->
+          <div class="next-area" id="nextArea">
+            <div class="next-label">Sholat Berikutnya</div>
+            <div class="next-row">
+              <span class="next-name" id="nextName">—</span>
+              <span class="next-time" id="nextTime">—</span>
             </div>
-
-            <div class="status" role="status" aria-live="polite">
-              <div class="statusText" id="statusText">
-                Memuat jadwal sholat untuk WIB (GMT+7).
-              </div>
-              <span class="badge" title="Timezone"><strong>Asia/Jakarta</strong>&nbsp;WIB</span>
+            <div class="countdown-row">
+              <span class="countdown" id="countdown">—</span>
+              <span class="countdown-sub">lagi</span>
             </div>
+          </div>
 
-            <div class="hint">
-              Sumber jadwal: AlAdhan API (timings by city). Zona waktu dikunci ke WIB (GMT+7 / Asia/Jakarta).
+          <!-- Settings strip -->
+          <div class="controls-strip" aria-label="Pengaturan kota">
+            <div class="ctrl-group">
+              <label class="ctrl-label" for="preset">Kota (WIB)</label>
+              <select id="preset" aria-label="Pilih kota WIB"></select>
             </div>
+            <div class="ctrl-group">
+              <label class="ctrl-label" for="madhab">Madhab</label>
+              <select id="madhab" aria-label="Pilih madhab">
+                <option value="shafi">Syafi'i</option>
+                <option value="hanafi">Hanafi</option>
+              </select>
+            </div>
+            <button id="refreshBtn" class="ctrl-btn" type="button">↻ Refresh</button>
           </div>
         </section>
 
-        <aside class="card" aria-label="Jadwal sholat">
-          <div class="row" style="margin-bottom: 8px">
-            <h2 style="margin: 0">Jadwal Sholat (Hari Ini)</h2>
-            <span class="badge" id="locationBadge" title="Lokasi aktif">
-              <strong id="locationName">—</strong>
-            </span>
+        <!-- ── RIGHT: Prayer schedule ─────────────────────── -->
+        <aside class="panel right-panel" aria-label="Jadwal sholat hari ini">
+          <div class="panel-head">
+            <div class="panel-label">Jadwal Sholat · Hari Ini</div>
           </div>
-
-          <div class="stack">
-            <div class="prayerList" id="prayerList" aria-label="Daftar jadwal sholat"></div>
-            <div class="status" style="border-style: solid">
-              <div class="statusText" id="nextPrayerText">Next: —</div>
-              <span class="badge" id="countdownBadge">
-                <strong id="countdown">—</strong>
-              </span>
-            </div>
-          </div>
-
-          <footer>
-            <span id="lastUpdated">Terakhir dimuat: —</span>
-            <span>Mode offline: terakhir tersimpan di browser</span>
-          </footer>
+          <div class="prayer-grid" id="prayerGrid" role="list"
+               aria-label="Daftar jadwal sholat"></div>
         </aside>
+
       </main>
-    </div>
+
+      <!-- ─── FOOTER ───────────────────────────────────────── -->
+      <footer class="bottombar" role="contentinfo">
+        <span class="status-text" id="statusText" role="status" aria-live="polite">
+          Memuat jadwal sholat…
+        </span>
+        <div class="bottom-right">
+          <span id="lastUpdated">—</span>
+          <span>AlAdhan API · WIB</span>
+        </div>
+      </footer>
+
+    </div><!-- .root -->
 
     <script>
-      const $ = (id) => document.getElementById(id);
+      'use strict';
+      const $ = id => document.getElementById(id);
 
-      const WIB_TZ = "Asia/Jakarta";
+      const WIB_TZ = 'Asia/Jakarta';
 
-      const CITIES_WIB = [
-        { city: "Jakarta", country: "Indonesia" },
-        { city: "Bandung", country: "Indonesia" },
-        { city: "Bekasi", country: "Indonesia" },
-        { city: "Bogor", country: "Indonesia" },
-        { city: "Depok", country: "Indonesia" },
-        { city: "Tangerang", country: "Indonesia" },
-        { city: "Tangerang Selatan", country: "Indonesia" },
-        { city: "Cirebon", country: "Indonesia" },
-        { city: "Cilacap", country: "Indonesia" },
-        { city: "Semarang", country: "Indonesia" },
-        { city: "Surakarta", country: "Indonesia" },
-        { city: "Yogyakarta", country: "Indonesia" },
-        { city: "Surabaya", country: "Indonesia" },
-        { city: "Malang", country: "Indonesia" },
-        { city: "Kediri", country: "Indonesia" },
-        { city: "Madiun", country: "Indonesia" },
-        { city: "Solo", country: "Indonesia" },
-        { city: "Lampung", country: "Indonesia" },
-        { city: "Palembang", country: "Indonesia" },
-        { city: "Pekanbaru", country: "Indonesia" },
-        { city: "Padang", country: "Indonesia" },
-        { city: "Jambi", country: "Indonesia" },
-        { city: "Pontianak", country: "Indonesia" },
+      const CITIES = [
+        'Bogor', 'Bekasi', 'Depok', 'Tangerang', 'Jakarta',
+        'Bandung', 'Cirebon', 'Semarang', 'Yogyakarta', 'Solo',
+        'Surakarta', 'Surabaya', 'Malang', 'Kediri', 'Madiun',
+        'Pontianak', 'Palembang', 'Pekanbaru', 'Padang', 'Medan',
+        'Lampung', 'Cilacap', 'Jambi',
+      ].map(c => ({ city: c, country: 'Indonesia' }));
+
+      const PRAYERS = [
+        { key: 'Fajr',    label: 'Subuh',   arabic: 'الفجر',   icon: '🌙' },
+        { key: 'Dhuhr',   label: 'Dzuhur',  arabic: 'الظهر',   icon: '☀️' },
+        { key: 'Asr',     label: 'Ashar',   arabic: 'العصر',   icon: '🌤' },
+        { key: 'Maghrib', label: 'Maghrib', arabic: 'المغرب',  icon: '🌇' },
+        { key: 'Isha',    label: 'Isya',    arabic: 'العشاء',  icon: '🌃' },
       ];
 
       const state = {
         tz: WIB_TZ,
-        madhab: "shafi",
-        city: "Jakarta",
-        country: "Indonesia",
-        locationLabel: "Jakarta",
+        madhab: 'shafi',
+        city: 'Bogor',
+        country: 'Indonesia',
         timings: null,
       };
 
-      const PRAYERS = [
-        { key: "Fajr", label: "Subuh" },
-        { key: "Dhuhr", label: "Dzuhur" },
-        { key: "Asr", label: "Ashar" },
-        { key: "Maghrib", label: "Maghrib" },
-        { key: "Isha", label: "Isya" },
-      ];
-
-      function pad2(n) {
-        return String(n).padStart(2, "0");
-      }
-
-      function fmtHms(d) {
-        return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
-      }
+      /* ── helpers ─────────────────────────────── */
+      function pad2(n) { return String(n).padStart(2, '0'); }
 
       function tzParts(date, tz) {
-        const parts = new Intl.DateTimeFormat("en-CA", {
-          timeZone: tz,
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
+        const p = new Intl.DateTimeFormat('en-CA', {
+          timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
         }).formatToParts(date);
-        const get = (type) => parts.find((p) => p.type === type)?.value;
-        const y = get("year");
-        const mo = get("month");
-        const d = get("day");
-        const h = get("hour");
-        const m = get("minute");
-        const s = get("second");
-        if (!y || !mo || !d || !h || !m || !s) return null;
-        return { y, mo, d, h, m, s };
+        const g = t => p.find(x => x.type === t)?.value;
+        const [y, mo, d, h, m, s] = [g('year'), g('month'), g('day'), g('hour'), g('minute'), g('second')];
+        return (y && mo && d && h && m && s) ? { y, mo, d, h, m, s } : null;
       }
 
-      // NOTE: This returns a Date in *local timezone* but representing wall-clock
-      // time in the provided timezone. Use only for durations/ordering within the same tz.
-      function tzWallClockAsLocalDate(date, tz) {
+      function wallDate(date, tz) {
         const p = tzParts(date, tz);
+        return p ? new Date(`${p.y}-${p.mo}-${p.d}T${p.h}:${p.m}:${p.s}`) : null;
+      }
+
+      function prayerWhen(hhmm, tz) {
+        const clean = String(hhmm).trim();
+        const m = clean.match(/^(\d{1,2}):(\d{2})/);
+        if (!m) return null;
+        const p = tzParts(new Date(), tz);
         if (!p) return null;
-        return new Date(`${p.y}-${p.mo}-${p.d}T${p.h}:${p.m}:${p.s}`);
+        return new Date(`${p.y}-${p.mo}-${p.d}T${pad2(+m[1])}:${pad2(+m[2])}:00`);
       }
 
-      function fmtDateLong(d, tz) {
-        return new Intl.DateTimeFormat("id-ID", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "2-digit",
+      function msToHms(ms) {
+        const t = Math.max(0, Math.floor(ms / 1000));
+        const h = Math.floor(t / 3600);
+        const m = Math.floor((t % 3600) / 60);
+        const s = t % 60;
+        return h > 0 ? `${h}:${pad2(m)}:${pad2(s)}` : `${m}:${pad2(s)}`;
+      }
+
+      function fmtDateLong(tz) {
+        return new Intl.DateTimeFormat('id-ID', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
           timeZone: tz,
-        }).format(d);
+        }).format(new Date());
       }
 
-      function setStatus(msg, kind = "info") {
-        const el = $("statusText");
+      function setStatus(msg, kind = 'info') {
+        const el = $('statusText');
         el.textContent = msg;
-        el.style.color =
-          kind === "danger"
-            ? "var(--danger)"
-            : kind === "warn"
-              ? "var(--warn)"
-              : "var(--muted)";
+        el.style.color = kind === 'danger' ? '#fb7185' : kind === 'warn' ? '#fbbf24' : '';
       }
 
+      /* ── Prefs / cache ───────────────────────── */
       function savePrefs() {
-        const payload = {
-          tz: state.tz,
-          madhab: state.madhab,
-          city: state.city,
-          country: state.country,
-          locationLabel: state.locationLabel,
-        };
-        localStorage.setItem("masjid-dashboard:prefs", JSON.stringify(payload));
+        localStorage.setItem('md2:prefs', JSON.stringify({
+          city: state.city, country: state.country, madhab: state.madhab,
+        }));
       }
 
       function loadPrefs() {
         try {
-          const raw = localStorage.getItem("masjid-dashboard:prefs");
-          if (!raw) return;
-          const p = JSON.parse(raw);
-          if (typeof p?.tz === "string") state.tz = p.tz;
-          if (p?.madhab === "hanafi" || p?.madhab === "shafi") state.madhab = p.madhab;
-          if (typeof p?.city === "string") state.city = p.city;
-          if (typeof p?.country === "string") state.country = p.country;
-          if (typeof p?.locationLabel === "string") state.locationLabel = p.locationLabel;
-        } catch {
-          // ignore
-        }
+          const p = JSON.parse(localStorage.getItem('md2:prefs') || '{}');
+          if (p.city)    state.city    = p.city;
+          if (p.country) state.country = p.country;
+          if (p.madhab === 'hanafi' || p.madhab === 'shafi') state.madhab = p.madhab;
+        } catch { /* ignore */ }
       }
 
-      function saveLastTimings(timings, meta) {
-        const payload = { timings, meta, savedAt: Date.now() };
-        localStorage.setItem("masjid-dashboard:lastTimings", JSON.stringify(payload));
+      function saveTimings(timings) {
+        localStorage.setItem('md2:timings', JSON.stringify({ timings, savedAt: Date.now() }));
       }
 
-      function loadLastTimings() {
-        try {
-          const raw = localStorage.getItem("masjid-dashboard:lastTimings");
-          if (!raw) return null;
-          return JSON.parse(raw);
-        } catch {
-          return null;
-        }
+      function loadTimings() {
+        try { return JSON.parse(localStorage.getItem('md2:timings') || 'null'); } catch { return null; }
       }
 
-      function renderLocationBadge() {
-        $("locationName").textContent = state.locationLabel || "—";
-      }
-
+      /* ── Clock ───────────────────────────────── */
       function renderClock() {
-        const now = new Date();
-        const tz = WIB_TZ;
-        state.tz = WIB_TZ;
-        const p = tzParts(now, tz);
-        $("clockTime").textContent = p ? `${p.h}:${p.m}:${p.s}` : "--:--:--";
-        $("clockDate").textContent = fmtDateLong(now, tz);
-        $("clockTz").textContent = "WIB";
-        $("clockOffset").textContent = "GMT+7";
+        const p = tzParts(new Date(), WIB_TZ);
+        if (p) $('clockTime').textContent = `${p.h}:${p.m}:${p.s}`;
+        $('clockDate').textContent = fmtDateLong(WIB_TZ);
+        $('headerDate').textContent = fmtDateLong(WIB_TZ);
       }
 
-      function parseTimeToDateToday(hhmm, tz) {
-        const cleaned = String(hhmm).trim();
-        const m = cleaned.match(/^(\d{1,2}):(\d{2})/);
-        if (!m) return null;
-        const h = Number(m[1]);
-        const min = Number(m[2]);
-        if (!Number.isFinite(h) || !Number.isFinite(min)) return null;
-
-        const now = new Date();
-        const p = tzParts(now, tz);
-        if (!p) return null;
-        return new Date(`${p.y}-${p.mo}-${p.d}T${pad2(h)}:${pad2(min)}:00`);
+      /* ── Next prayer & countdown ─────────────── */
+      function findNext() {
+        if (!state.timings) return null;
+        const now = wallDate(new Date(), WIB_TZ);
+        if (!now) return null;
+        const sched = PRAYERS.map(p => ({
+          ...p, time: state.timings[p.key],
+          when: prayerWhen(state.timings[p.key], WIB_TZ),
+        })).filter(x => x.when);
+        sched.sort((a, b) => a.when - b.when);
+        return sched.find(x => x.when > now) || { ...sched[0], isTomorrow: true };
       }
 
-      function renderPrayerList(timings) {
-        const list = $("prayerList");
-        list.innerHTML = "";
-
-        for (const p of PRAYERS) {
-          const t = timings?.[p.key];
-          const item = document.createElement("div");
-          item.className = "prayerItem";
-          item.innerHTML = `
-            <div class="prayerLeft">
-              <div class="prayerName">${p.label}</div>
-              <div class="prayerMeta">${p.key}</div>
-            </div>
-            <div class="prayerTime">${t ? String(t).slice(0, 5) : "—"}</div>
-          `;
-          list.appendChild(item);
-        }
-      }
-
-      function findNextPrayer(timings, tz) {
-        if (!timings) return null;
-
-        const now = new Date();
-        const nowInTz = tzWallClockAsLocalDate(now, tz);
-        if (!nowInTz) return null;
-
-        const schedule = PRAYERS.map((p) => ({
-          ...p,
-          time: timings[p.key],
-          when: parseTimeToDateToday(timings[p.key], tz),
-        })).filter((x) => x.when instanceof Date && !Number.isNaN(x.when.valueOf()));
-
-        schedule.sort((a, b) => a.when - b.when);
-        const next = schedule.find((s) => s.when > nowInTz);
-        if (next) return next;
-        return schedule[0] ? { ...schedule[0], isTomorrow: true } : null;
-      }
-
-      function msToHhmmss(ms) {
-        const total = Math.max(0, Math.floor(ms / 1000));
-        const h = Math.floor(total / 3600);
-        const m = Math.floor((total % 3600) / 60);
-        const s = total % 60;
-        return h > 0 ? `${h}:${pad2(m)}:${pad2(s)}` : `${m}:${pad2(s)}`;
-      }
-
-      function updateNextPrayerUI() {
-        if (!state.timings) {
-          $("nextPrayerText").textContent = "Next: —";
-          $("countdown").textContent = "—";
-          return;
-        }
-
-        const tz = state.tz || "UTC";
-        const next = findNextPrayer(state.timings, tz);
+      function renderNext() {
+        const next = findNext();
         if (!next) {
-          $("nextPrayerText").textContent = "Next: —";
-          $("countdown").textContent = "—";
+          $('nextName').textContent = '—';
+          $('nextTime').textContent = '—';
+          $('countdown').textContent = '—';
           return;
         }
-
-        const now = tzWallClockAsLocalDate(new Date(), tz);
-        if (!now) {
-          $("countdown").textContent = "—";
-          return;
-        }
-        const when = next.when;
-        const diff = when - now;
-        const label = next.label + (next.isTomorrow ? " (besok)" : "");
-        $("nextPrayerText").textContent = `Next: ${label} • ${String(next.time).slice(0, 5)}`;
-        $("countdown").textContent = msToHhmmss(diff);
+        const now = wallDate(new Date(), WIB_TZ);
+        const diff = next.when - now;
+        $('nextName').textContent = next.label + (next.isTomorrow ? ' (besok)' : '');
+        $('nextTime').textContent  = String(next.time).slice(0, 5);
+        $('countdown').textContent = msToHms(diff);
       }
 
-      async function fetchPrayerTimes({ city, country, madhab }) {
-        const tz = state.tz || "UTC";
-        const today = new Intl.DateTimeFormat("en-CA", {
-          timeZone: tz,
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
+      /* ── Prayer grid ─────────────────────────── */
+      function renderGrid() {
+        const grid = $('prayerGrid');
+        grid.innerHTML = '';
+        if (!state.timings) return;
+
+        const now = wallDate(new Date(), WIB_TZ);
+        const next = findNext();
+
+        PRAYERS.forEach(p => {
+          const t = state.timings[p.key];
+          const when = prayerWhen(t, WIB_TZ);
+          const isNext = next?.key === p.key && !next?.isTomorrow;
+          const isDone = now && when && when < now && !isNext;
+
+          const row = document.createElement('div');
+          row.className = 'prayer-row' + (isNext ? ' is-next' : '') + (isDone ? ' is-done' : '');
+          row.setAttribute('role', 'listitem');
+          row.innerHTML = `
+            <div class="pr-left">
+              <div class="pr-icon" aria-hidden="true">${p.icon}</div>
+              <div class="pr-info">
+                <div class="pr-name">${p.label}</div>
+                <div class="pr-arabic">${p.arabic}</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px">
+              <span class="pr-next-badge">Berikutnya</span>
+              <span class="pr-time">${t ? String(t).slice(0, 5) : '—'}</span>
+            </div>
+          `;
+          grid.appendChild(row);
+        });
+      }
+
+      /* ── Fetch API ───────────────────────────── */
+      async function fetchTimings() {
+        const tz = WIB_TZ;
+        const today = new Intl.DateTimeFormat('en-CA', {
+          timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit',
         }).format(new Date());
-        const method = 11;
-        const school = madhab === "hanafi" ? 1 : 0;
+        const school = state.madhab === 'hanafi' ? 1 : 0;
+        const url = `https://api.aladhan.com/v1/timingsByCity`
+          + `?city=${encodeURIComponent(state.city)}`
+          + `&country=${encodeURIComponent(state.country)}`
+          + `&date=${encodeURIComponent(today)}`
+          + `&method=11&school=${school}`;
 
-        const url =
-          "https://api.aladhan.com/v1/timingsByCity" +
-          `?city=${encodeURIComponent(city)}` +
-          `&country=${encodeURIComponent(country)}` +
-          `&date=${encodeURIComponent(today)}` +
-          `&method=${encodeURIComponent(method)}` +
-          `&school=${encodeURIComponent(school)}` +
-          `&tune=0,0,0,0,0,0,0,0,0`;
-
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error(`Gagal fetch (${res.status})`);
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
-        if (json?.code !== 200 || !json?.data?.timings) throw new Error("Format data tidak sesuai");
-        return {
-          timings: json.data.timings,
-          meta: json.data.meta,
-          date: json.data.date,
-        };
+        if (json?.code !== 200 || !json?.data?.timings) throw new Error('Format tidak sesuai');
+        return json.data.timings;
       }
 
       async function refresh() {
-        const madhab = $("madhab").value;
-        state.madhab = madhab;
-
-        savePrefs();
-        renderLocationBadge();
-        setStatus("Memuat jadwal sholat...", "info");
-
+        setStatus('Memuat jadwal sholat…');
         try {
-          const { timings, meta } = await fetchPrayerTimes({
-            city: state.city,
-            country: state.country,
-            madhab,
-          });
+          const timings = await fetchTimings();
           state.timings = timings;
-          renderPrayerList(timings);
-          updateNextPrayerUI();
-
-          const saved = new Date();
-          $("lastUpdated").textContent = `Terakhir dimuat: ${new Intl.DateTimeFormat("id-ID", {
-            dateStyle: "medium",
-            timeStyle: "short",
-            timeZone: state.tz,
-          }).format(saved)}`;
-          saveLastTimings(timings, meta);
-          setStatus("Jadwal berhasil dimuat dan disimpan untuk mode offline.", "info");
+          saveTimings(timings);
+          renderGrid();
+          const ts = new Intl.DateTimeFormat('id-ID', {
+            dateStyle: 'medium', timeStyle: 'short', timeZone: WIB_TZ,
+          }).format(new Date());
+          $('lastUpdated').textContent = `Diperbarui: ${ts}`;
+          setStatus(`Jadwal ${state.city} berhasil dimuat`);
         } catch (e) {
-          const cached = loadLastTimings();
+          const cached = loadTimings();
           if (cached?.timings) {
             state.timings = cached.timings;
-            renderPrayerList(cached.timings);
-            updateNextPrayerUI();
-            setStatus(
-              "Gagal memuat dari internet. Menampilkan jadwal terakhir tersimpan (offline).",
-              "warn"
-            );
-            $("lastUpdated").textContent = `Terakhir dimuat: ${new Intl.DateTimeFormat("id-ID", {
-              dateStyle: "medium",
-              timeStyle: "short",
-              timeZone: state.tz,
-            }).format(new Date(cached.savedAt))}`;
+            renderGrid();
+            setStatus('Gagal memuat — menampilkan data tersimpan', 'warn');
           } else {
-            setStatus(`Gagal memuat jadwal: ${e?.message || e}`, "danger");
+            setStatus(`Gagal: ${e.message}`, 'danger');
           }
         }
       }
 
-      function applyPreset(value) {
-        const idx = Number(value);
-        const selected = CITIES_WIB[idx];
-        if (!selected) return;
-        state.city = selected.city;
-        state.country = selected.country;
-        state.locationLabel = selected.city;
-        savePrefs();
-        renderLocationBadge();
-      }
-
-      function hydrateFromState() {
-        $("madhab").value = state.madhab;
-        state.tz = WIB_TZ;
-        // fill city select
-        const sel = $("preset");
-        sel.innerHTML = "";
-        CITIES_WIB.forEach((c, i) => {
-          const opt = document.createElement("option");
+      /* ── UI hydration ────────────────────────── */
+      function populateCitySelect() {
+        const sel = $('preset');
+        sel.innerHTML = '';
+        CITIES.forEach((c, i) => {
+          const opt = document.createElement('option');
           opt.value = String(i);
           opt.textContent = c.city;
           sel.appendChild(opt);
         });
-        const currentIdx = Math.max(
-          0,
-          CITIES_WIB.findIndex((c) => c.city === state.city && c.country === state.country)
-        );
-        sel.value = String(currentIdx >= 0 ? currentIdx : 0);
-        renderLocationBadge();
+        const idx = Math.max(0, CITIES.findIndex(c => c.city === state.city));
+        sel.value = String(idx >= 0 ? idx : 0);
       }
 
       function wire() {
-        $("refreshBtn").addEventListener("click", refresh);
-        $("preset").addEventListener("change", (e) => {
-          applyPreset(e.target.value);
-          refresh();
+        $('preset').addEventListener('change', e => {
+          const c = CITIES[+e.target.value];
+          if (c) { state.city = c.city; state.country = c.country; savePrefs(); refresh(); }
         });
-        $("madhab").addEventListener("change", () => {
-          state.madhab = $("madhab").value;
-          savePrefs();
-          refresh();
+        $('madhab').addEventListener('change', e => {
+          state.madhab = e.target.value; savePrefs(); refresh();
         });
-
-        window.addEventListener("keydown", (e) => {
-          if ((e.ctrlKey || e.metaKey) && e.key === "Enter") refresh();
-        });
+        $('refreshBtn').addEventListener('click', refresh);
       }
 
-      function startTimers() {
+      function startTick() {
         renderClock();
-        updateNextPrayerUI();
-        setInterval(() => {
-          renderClock();
-          updateNextPrayerUI();
-        }, 1000);
+        renderNext();
+        setInterval(() => { renderClock(); renderNext(); }, 1000);
+
+        // re-fetch every hour to keep timings fresh
+        setInterval(refresh, 60 * 60 * 1000);
       }
 
+      /* ── Boot ────────────────────────────────── */
       function init() {
         loadPrefs();
-        hydrateFromState();
+        $('madhab').value = state.madhab;
+        populateCitySelect();
         wire();
-        startTimers();
+        startTick();
 
-        const cached = loadLastTimings();
+        const cached = loadTimings();
         if (cached?.timings) {
           state.timings = cached.timings;
-          renderPrayerList(cached.timings);
-          updateNextPrayerUI();
-          $("lastUpdated").textContent = `Terakhir dimuat: ${new Intl.DateTimeFormat("id-ID", {
-            dateStyle: "medium",
-            timeStyle: "short",
-            timeZone: state.tz,
-          }).format(new Date(cached.savedAt))}`;
-          setStatus("Menampilkan jadwal terakhir tersimpan. Klik “Muat Jadwal Hari Ini” untuk update.", "info");
+          renderGrid();
+          const ts = new Intl.DateTimeFormat('id-ID', {
+            dateStyle: 'medium', timeStyle: 'short', timeZone: WIB_TZ,
+          }).format(new Date(cached.savedAt));
+          $('lastUpdated').textContent = `Cache: ${ts}`;
+          setStatus('Data tersimpan ditampilkan. Sedang refresh…');
         }
+        refresh();
       }
 
       init();
