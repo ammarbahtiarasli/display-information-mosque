@@ -440,6 +440,24 @@
         margin-top: 3px;
       }
 
+      .pr-imam {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+        font-size: clamp(11px, 1.05vw, 14px);
+        color: var(--sub);
+        font-weight: 500;
+      }
+
+      .pr-imam::before {
+        content: '👤';
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      .prayer-row.is-next .pr-imam { color: var(--green-dark); font-weight: 700; }
+
       .prayer-row.is-next .pr-name { color: var(--green-dark); }
 
       .pr-right {
@@ -803,6 +821,14 @@
         { key:'Isha',    label:'Isya',   arabic:'العشاء', num:'05' },
       ];
 
+      const IMAMS = {
+        Fajr:    'Ust. H. Ahmad Fauzi, Lc.',
+        Dhuhr:   'Ust. H. Muhammad Ridwan, S.Ag.',
+        Asr:     'Ust. H. Abdurrahman Wahid, Lc.',
+        Maghrib: 'Ust. H. Yusuf Al-Hafidz, M.Ag.',
+        Isha:    'Ust. H. Ibrahim Siddiq, Lc., M.Pd.',
+      };
+
       const state = { madhab:'shafi', city:'Bogor', country:'Indonesia', timings:null };
 
       const pad2 = n => String(n).padStart(2,'0');
@@ -929,11 +955,13 @@
           const row = document.createElement('div');
           row.className = 'prayer-row'+(isNext?' is-next':'')+(isDone?' is-done':'');
           row.setAttribute('role','listitem');
+          const imam = IMAMS[p.key] || '—';
           row.innerHTML = `
             <div class="pr-num" aria-hidden="true">${p.num}</div>
             <div class="pr-info">
               <div class="pr-name">${p.label}</div>
               <div class="pr-arabic">${p.arabic}</div>
+              <div class="pr-imam">${imam}</div>
             </div>
             <div class="pr-right">
               <span class="pr-badge">Selanjutnya</span>
