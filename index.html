@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Masjid Jami' Al-Karomah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,7 +26,7 @@
         --shadow-sm:   0 2px 10px rgba(0,0,0,0.14);
         --r:           16px;
         --mono: ui-monospace,'Cascadia Code',SFMono-Regular,Menlo,Consolas,monospace;
-        --sans: ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+        --sans: 'Plus Jakarta Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
       }
 
       /* ── Background ──────────────────────────────────────────── */
@@ -225,6 +228,15 @@
         color: var(--sub);
         font-weight: 600;
         text-align: center;
+      }
+
+      .clock-hijri {
+        margin-top: 6px;
+        font-size: clamp(16px, 2vw, 24px);
+        color: var(--green-mid);
+        font-weight: 700;
+        text-align: center;
+        letter-spacing: .2px;
       }
 
       .tz-tag {
@@ -572,6 +584,7 @@
           <div class="clock-block">
             <div class="clock-time" id="clockTime">--:--:--</div>
             <div class="clock-date" id="clockDate">—</div>
+            <div class="clock-hijri" id="clockHijri">—</div>
             <div class="tz-tag">WIB · GMT+7</div>
           </div>
 
@@ -692,6 +705,27 @@
         }).format(new Date());
       }
 
+      function dateHijri() {
+        try {
+          // extract parts to avoid locale appending "H" automatically
+          const fmt = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura',{
+            day:'numeric', month:'long', year:'numeric', timeZone:WIB_TZ,
+          });
+          const parts = fmt.formatToParts(new Date());
+          const get = t => parts.find(p=>p.type===t)?.value ?? '';
+          return `${get('day')} ${get('month')} ${get('year')} H`;
+        } catch {
+          try {
+            const fmt = new Intl.DateTimeFormat('ar-SA-u-ca-islamic',{
+              day:'numeric', month:'long', year:'numeric', timeZone:WIB_TZ,
+            });
+            const parts = fmt.formatToParts(new Date());
+            const get = t => parts.find(p=>p.type===t)?.value ?? '';
+            return `${get('day')} ${get('month')} ${get('year')} H`;
+          } catch { return ''; }
+        }
+      }
+
       function setStatus(msg, kind='info') {
         const el = $('statusText');
         el.textContent = msg;
@@ -721,6 +755,8 @@
         const d = dateLong();
         $('clockDate').textContent  = d;
         $('headerDate').textContent = d;
+        const h = dateHijri();
+        if ($('clockHijri')) $('clockHijri').textContent = h;
       }
 
       /* next */
