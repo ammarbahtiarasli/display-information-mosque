@@ -72,26 +72,26 @@
       }
 
       .mosque-icon {
-        width: 48px; height: 48px;
-        border-radius: 13px;
+        width: 62px; height: 62px;
+        border-radius: 14px;
         background: linear-gradient(135deg, var(--green-dark), var(--green));
         display: grid;
         place-items: center;
-        font-size: 24px;
+        font-size: 32px;
         flex-shrink: 0;
         box-shadow: var(--shadow-sm);
       }
 
       .mosque-text h1 {
-        font-size: clamp(17px, 2.2vw, 25px);
+        font-size: clamp(22px, 2.8vw, 36px);
         font-weight: 800;
         color: var(--green-dark);
         line-height: 1.15;
       }
 
       .mosque-addr {
-        margin-top: 2px;
-        font-size: clamp(11px, 1.1vw, 13px);
+        margin-top: 3px;
+        font-size: clamp(14px, 1.4vw, 18px);
         color: var(--sub);
         display: flex;
         align-items: center;
@@ -114,7 +114,7 @@
       }
 
       .header-date {
-        font-size: clamp(11px, 1.1vw, 13px);
+        font-size: clamp(14px, 1.4vw, 17px);
         color: var(--sub);
         text-align: right;
         line-height: 1.4;
@@ -124,11 +124,11 @@
         display: flex;
         align-items: center;
         gap: 7px;
-        padding: 7px 14px;
+        padding: 9px 18px;
         border-radius: 999px;
         background: var(--green-dark);
         color: #fff;
-        font-size: 12px;
+        font-size: 15px;
         font-weight: 800;
         letter-spacing: .5px;
         box-shadow: var(--shadow-sm);
@@ -186,8 +186,8 @@
       .card-header {
         background: linear-gradient(90deg, var(--green-dark), var(--green-mid));
         color: #fff;
-        padding: 9px 20px;
-        font-size: 11px;
+        padding: 11px 22px;
+        font-size: 14px;
         font-weight: 800;
         letter-spacing: 1.2px;
         text-transform: uppercase;
@@ -212,31 +212,31 @@
 
       .clock-time {
         font-family: var(--mono);
-        font-size: clamp(60px, 9.5vw, 96px);
+        font-size: clamp(72px, 11vw, 116px);
         font-weight: 900;
         color: var(--green-dark);
-        letter-spacing: 3px;
+        letter-spacing: 4px;
         line-height: 1;
       }
 
       .clock-date {
-        margin-top: 8px;
-        font-size: clamp(12px, 1.3vw, 15px);
+        margin-top: 10px;
+        font-size: clamp(16px, 1.8vw, 22px);
         color: var(--sub);
-        font-weight: 500;
+        font-weight: 600;
         text-align: center;
       }
 
       .tz-tag {
-        margin-top: 9px;
+        margin-top: 11px;
         display: inline-block;
-        padding: 4px 16px;
+        padding: 5px 18px;
         border-radius: 999px;
         background: var(--green);
         color: #fff;
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 800;
-        letter-spacing: .8px;
+        letter-spacing: 1px;
       }
 
       /* Next prayer */
@@ -248,12 +248,12 @@
       }
 
       .next-lbl {
-        font-size: 10px;
+        font-size: 13px;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 1.2px;
         color: var(--dim);
-        margin-bottom: 7px;
+        margin-bottom: 8px;
       }
 
       .next-row {
@@ -265,31 +265,31 @@
       }
 
       .next-name {
-        font-size: clamp(20px, 2.6vw, 28px);
+        font-size: clamp(26px, 3.2vw, 38px);
         font-weight: 900;
         color: var(--green-dark);
       }
 
       .next-time {
         font-family: var(--mono);
-        font-size: clamp(18px, 2.2vw, 24px);
+        font-size: clamp(24px, 2.8vw, 34px);
         font-weight: 700;
         color: var(--green-mid);
       }
 
       .countdown {
-        margin-top: 4px;
+        margin-top: 6px;
         font-family: var(--mono);
-        font-size: clamp(30px, 4.2vw, 50px);
+        font-size: clamp(40px, 5.5vw, 66px);
         font-weight: 900;
         color: var(--green-dark);
-        letter-spacing: 1px;
+        letter-spacing: 2px;
       }
 
       .countdown-cap {
-        font-size: 11px;
+        font-size: 14px;
         color: var(--dim);
-        margin-top: 1px;
+        margin-top: 2px;
       }
 
       /* Controls */
@@ -307,7 +307,7 @@
       .ctrl-grp { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 110px; }
 
       .ctrl-lbl {
-        font-size: 10px;
+        font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: .7px;
@@ -316,7 +316,7 @@
 
       select {
         font: inherit;
-        font-size: 13px;
+        font-size: 15px;
         color: var(--text);
         background: #fff;
         border: 1.5px solid var(--border);
@@ -330,13 +330,13 @@
       select:focus { border-color: var(--green); }
 
       .ctrl-btn {
-        padding: 8px 18px;
+        padding: 10px 22px;
         border-radius: 9px;
         border: none;
         background: var(--green-dark);
         color: #fff;
         font: inherit;
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 700;
         cursor: pointer;
         transition: filter .15s, transform .1s;
@@ -380,11 +380,11 @@
       .prayer-row.is-done { opacity: .48; }
 
       .pr-icon {
-        width: 40px; height: 40px;
-        border-radius: 11px;
+        width: 54px; height: 54px;
+        border-radius: 13px;
         display: grid;
         place-items: center;
-        font-size: 20px;
+        font-size: 28px;
         background: rgba(0,200,83,.12);
         border: 1px solid var(--border-soft);
         flex-shrink: 0;
@@ -398,16 +398,16 @@
       .pr-info { flex: 1; min-width: 0; }
 
       .pr-name {
-        font-size: clamp(14px, 1.7vw, 20px);
+        font-size: clamp(20px, 2.2vw, 28px);
         font-weight: 800;
         color: var(--text);
         line-height: 1.2;
       }
 
       .pr-arabic {
-        font-size: clamp(10px, .9vw, 12px);
+        font-size: clamp(13px, 1.2vw, 16px);
         color: var(--dim);
-        margin-top: 2px;
+        margin-top: 3px;
       }
 
       .prayer-row.is-next .pr-name { color: var(--green-dark); }
@@ -422,7 +422,7 @@
 
       .pr-time {
         font-family: var(--mono);
-        font-size: clamp(22px, 2.8vw, 34px);
+        font-size: clamp(30px, 3.8vw, 48px);
         font-weight: 900;
         color: var(--text);
         letter-spacing: .5px;
@@ -432,14 +432,14 @@
 
       .pr-badge {
         display: none;
-        font-size: 9px;
+        font-size: 11px;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: .8px;
         color: #fff;
         background: var(--green);
         border-radius: 999px;
-        padding: 2px 9px;
+        padding: 3px 12px;
       }
 
       .prayer-row.is-next .pr-badge { display: inline-block; }
@@ -451,7 +451,7 @@
         background: var(--green-dark);
         color: #fff;
         padding: 0;
-        height: 38px;
+        height: 48px;
         display: flex;
         align-items: center;
         overflow: hidden;
@@ -462,11 +462,11 @@
       .ticker-tag {
         display: flex;
         align-items: center;
-        gap: 7px;
-        padding: 0 16px;
+        gap: 8px;
+        padding: 0 20px;
         height: 100%;
         background: var(--green);
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 800;
         letter-spacing: .8px;
         text-transform: uppercase;
@@ -475,7 +475,7 @@
         z-index: 1;
       }
 
-      .ticker-tag-icon { font-size: 14px; }
+      .ticker-tag-icon { font-size: 18px; }
 
       .ticker-track {
         flex: 1;
@@ -489,7 +489,7 @@
         white-space: nowrap;
         animation: marquee 28s linear infinite;
         gap: 80px;
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 600;
         letter-spacing: .2px;
       }
@@ -521,7 +521,7 @@
       }
 
       .status-txt {
-        font-size: 11px;
+        font-size: 13px;
         color: var(--dim);
         min-width: 0;
       }
@@ -529,7 +529,7 @@
       .footer-meta {
         display: flex;
         gap: 12px;
-        font-size: 11px;
+        font-size: 13px;
         color: var(--dim);
         white-space: nowrap;
       }
