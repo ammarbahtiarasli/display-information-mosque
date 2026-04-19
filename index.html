@@ -80,7 +80,10 @@
         background: linear-gradient(135deg, var(--green-dark), var(--green));
         display: grid;
         place-items: center;
-        font-size: 32px;
+        font-size: 18px;
+        font-weight: 900;
+        letter-spacing: .5px;
+        color: #fff;
         flex-shrink: 0;
         box-shadow: var(--shadow-sm);
       }
@@ -391,20 +394,25 @@
 
       .prayer-row.is-done { opacity: .48; }
 
-      .pr-icon {
-        width: 54px; height: 54px;
-        border-radius: 13px;
+      .pr-num {
+        width: 52px; height: 52px;
+        border-radius: 12px;
         display: grid;
         place-items: center;
-        font-size: 28px;
-        background: rgba(0,200,83,.12);
-        border: 1px solid var(--border-soft);
+        font-family: var(--mono);
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: var(--green-mid);
+        background: rgba(0,200,83,.10);
+        border: 1.5px solid var(--border-soft);
         flex-shrink: 0;
       }
 
-      .prayer-row.is-next .pr-icon {
-        background: var(--green);
+      .prayer-row.is-next .pr-num {
+        background: var(--green-dark);
         border-color: var(--green-dark);
+        color: #fff;
       }
 
       .pr-info { flex: 1; min-width: 0; }
@@ -487,7 +495,6 @@
         z-index: 1;
       }
 
-      .ticker-tag-icon { font-size: 22px; }
 
       .ticker-track {
         flex: 1;
@@ -499,7 +506,7 @@
         display: inline-flex;
         align-items: center;
         white-space: nowrap;
-        animation: marquee 32s linear infinite;
+        animation: marquee 60s linear infinite;
         gap: 100px;
         font-size: 22px;
         font-weight: 600;
@@ -559,7 +566,7 @@
       <!-- ── HEADER ──────────────────────────────────────────────── -->
       <header class="topbar">
         <div class="mosque-id">
-          <div class="mosque-icon" aria-hidden="true">🕌</div>
+          <div class="mosque-icon" aria-hidden="true">MJ</div>
           <div class="mosque-text">
             <h1>Masjid Jami' Al-Karomah</h1>
             <div class="mosque-addr">Kp. Kaca-kaca, Desa Pamijahan, Kec. Bantarkalong, Kab. Tasikmalaya, Jawa Barat</div>
@@ -625,13 +632,12 @@
       <!-- ── RUNNING TEXT / TICKER ────────────────────────────────── -->
       <div class="ticker" role="marquee" aria-label="Pengumuman masjid">
         <div class="ticker-tag">
-          <span class="ticker-tag-icon" aria-hidden="true">📢</span>
           Pengumuman
         </div>
         <div class="ticker-track">
           <div class="ticker-inner"
-               data-text="🔇 Ketika memasuki waktu salat, mohon telepon genggam, jam tangan pintar, dan perangkat elektronik lainnya dimatikan atau diaktifkan mode senyap.   🚶 Jamaah diimbau untuk datang lebih awal, merapatkan dan meluruskan saf, serta menjaga ketenangan dan kekhusyukan di dalam masjid.   🧴 Pastikan telah berwudu dengan sempurna sebelum memasuki masjid.   🙏 Mari kita jaga kebersihan, ketertiban, dan kesucian masjid bersama-sama. Jazākumullāhu khairan atas perhatian dan kerja samanya.   🕌 Masjid Jami' Al-Karomah — Kp. Kaca-kaca, Desa Pamijahan, Kec. Bantarkalong, Kab. Tasikmalaya">
-            🔇 Ketika memasuki waktu salat, mohon telepon genggam, jam tangan pintar, dan perangkat elektronik lainnya dimatikan atau diaktifkan mode senyap.   🚶 Jamaah diimbau untuk datang lebih awal, merapatkan dan meluruskan saf, serta menjaga ketenangan dan kekhusyukan di dalam masjid.   🧴 Pastikan telah berwudu dengan sempurna sebelum memasuki masjid.   🙏 Mari kita jaga kebersihan, ketertiban, dan kesucian masjid bersama-sama. Jazākumullāhu khairan atas perhatian dan kerja samanya.   🕌 Masjid Jami' Al-Karomah — Kp. Kaca-kaca, Desa Pamijahan, Kec. Bantarkalong, Kab. Tasikmalaya
+               data-text="Ketika memasuki waktu salat, mohon telepon genggam, jam tangan pintar, dan perangkat elektronik lainnya dimatikan atau diaktifkan mode senyap.   ·   Jamaah diimbau untuk datang lebih awal, merapatkan dan meluruskan saf, serta menjaga ketenangan dan kekhusyukan di dalam masjid.   ·   Pastikan telah berwudu dengan sempurna sebelum memasuki masjid.   ·   Mari kita jaga kebersihan, ketertiban, dan kesucian masjid bersama-sama. Jazākumullāhu khairan atas perhatian dan kerja samanya.   ·   Masjid Jami' Al-Karomah — Kp. Kaca-kaca, Desa Pamijahan, Kec. Bantarkalong, Kab. Tasikmalaya">
+            Ketika memasuki waktu salat, mohon telepon genggam, jam tangan pintar, dan perangkat elektronik lainnya dimatikan atau diaktifkan mode senyap.   ·   Jamaah diimbau untuk datang lebih awal, merapatkan dan meluruskan saf, serta menjaga ketenangan dan kekhusyukan di dalam masjid.   ·   Pastikan telah berwudu dengan sempurna sebelum memasuki masjid.   ·   Mari kita jaga kebersihan, ketertiban, dan kesucian masjid bersama-sama. Jazākumullāhu khairan atas perhatian dan kerja samanya.   ·   Masjid Jami' Al-Karomah — Kp. Kaca-kaca, Desa Pamijahan, Kec. Bantarkalong, Kab. Tasikmalaya
           </div>
         </div>
       </div>
@@ -660,11 +666,11 @@
       ].map(c => ({ city: c, country: 'Indonesia' }));
 
       const PRAYERS = [
-        { key:'Fajr',    label:'Subuh',   arabic:'الفجر',  icon:'🌙' },
-        { key:'Dhuhr',   label:'Zuhur',   arabic:'الظهر',  icon:'☀️' },
-        { key:'Asr',     label:'Asar',    arabic:'العصر',  icon:'🌤' },
-        { key:'Maghrib', label:'Magrib',  arabic:'المغرب', icon:'🌇' },
-        { key:'Isha',    label:'Isya',    arabic:'العشاء', icon:'🌃' },
+        { key:'Fajr',    label:'Subuh',  arabic:'الفجر',  num:'01' },
+        { key:'Dhuhr',   label:'Zuhur',  arabic:'الظهر',  num:'02' },
+        { key:'Asr',     label:'Asar',   arabic:'العصر',  num:'03' },
+        { key:'Maghrib', label:'Magrib', arabic:'المغرب', num:'04' },
+        { key:'Isha',    label:'Isya',   arabic:'العشاء', num:'05' },
       ];
 
       const state = { madhab:'shafi', city:'Bogor', country:'Indonesia', timings:null };
@@ -793,7 +799,7 @@
           row.className = 'prayer-row'+(isNext?' is-next':'')+(isDone?' is-done':'');
           row.setAttribute('role','listitem');
           row.innerHTML = `
-            <div class="pr-icon" aria-hidden="true">${p.icon}</div>
+            <div class="pr-num" aria-hidden="true">${p.num}</div>
             <div class="pr-info">
               <div class="pr-name">${p.label}</div>
               <div class="pr-arabic">${p.arabic}</div>
