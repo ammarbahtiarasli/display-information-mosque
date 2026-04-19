@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/78911851?v=4" />
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -77,15 +78,10 @@
       .mosque-icon {
         width: 62px; height: 62px;
         border-radius: 14px;
-        background: linear-gradient(135deg, var(--green-dark), var(--green));
-        display: grid;
-        place-items: center;
-        font-size: 18px;
-        font-weight: 900;
-        letter-spacing: .5px;
-        color: #fff;
+        object-fit: cover;
         flex-shrink: 0;
         box-shadow: var(--shadow-sm);
+        border: 2px solid var(--border);
       }
 
       .mosque-text h1 {
@@ -685,7 +681,7 @@
       <!-- ── HEADER ──────────────────────────────────────────────── -->
       <header class="topbar">
         <div class="mosque-id">
-          <div class="mosque-icon" aria-hidden="true">MJ</div>
+          <img class="mosque-icon" src="https://avatars.githubusercontent.com/u/78911851?v=4" alt="Logo Masjid Jami' Al-Karomah" />
           <div class="mosque-text">
             <h1>Masjid Jami' Al-Karomah</h1>
             <div class="mosque-addr">Kp. Kaca-kaca, Desa Pamijahan, Kec. Bantarkalong, Kab. Tasikmalaya, Jawa Barat</div>
