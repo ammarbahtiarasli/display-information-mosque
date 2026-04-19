@@ -562,7 +562,7 @@
           <div class="mosque-icon" aria-hidden="true">🕌</div>
           <div class="mosque-text">
             <h1>Masjid Jami' Al-Karomah</h1>
-            <div class="mosque-addr">Kaca-kaca Pamijahan</div>
+            <div class="mosque-addr">Kp. Kaca-kaca, Desa Pamijahan, Kec. Bantarkalong, Kab. Tasikmalaya, Jawa Barat</div>
           </div>
         </div>
         <div class="topbar-right">
@@ -578,7 +578,7 @@
       <main class="content">
 
         <!-- Left: Jam + Next + Settings -->
-        <section class="card" aria-label="Jam dan sholat berikutnya">
+        <section class="card" aria-label="Jam dan salat berikutnya">
           <div class="card-header">Waktu · WIB / GMT+7</div>
 
           <div class="clock-block">
@@ -589,7 +589,7 @@
           </div>
 
           <div class="next-block">
-            <div class="next-lbl">Sholat Berikutnya</div>
+            <div class="next-lbl">Salat Berikutnya</div>
             <div class="next-row">
               <span class="next-name" id="nextName">—</span>
               <span class="next-time" id="nextTime">—</span>
@@ -604,8 +604,8 @@
               <select id="preset" aria-label="Pilih kota WIB"></select>
             </div>
             <div class="ctrl-grp">
-              <span class="ctrl-lbl">Madhab</span>
-              <select id="madhab" aria-label="Pilih madhab">
+              <span class="ctrl-lbl">Mazhab</span>
+              <select id="madhab" aria-label="Pilih mazhab">
                 <option value="shafi">Syafi'i</option>
                 <option value="hanafi">Hanafi</option>
               </select>
@@ -615,33 +615,33 @@
         </section>
 
         <!-- Right: Prayer schedule -->
-        <aside class="card" aria-label="Jadwal sholat hari ini">
-          <div class="card-header">Jadwal Sholat · Hari Ini</div>
+        <aside class="card" aria-label="Jadwal salat hari ini">
+          <div class="card-header">Jadwal Salat · Hari Ini</div>
           <div class="prayer-list" id="prayerList" role="list"></div>
         </aside>
 
       </main>
 
       <!-- ── RUNNING TEXT / TICKER ────────────────────────────────── -->
-      <div class="ticker" role="marquee" aria-label="Pengumuman">
+      <div class="ticker" role="marquee" aria-label="Pengumuman masjid">
         <div class="ticker-tag">
           <span class="ticker-tag-icon" aria-hidden="true">📢</span>
           Pengumuman
         </div>
         <div class="ticker-track">
           <div class="ticker-inner"
-               data-text="🔇 Ketika masuk waktu sholat, alat komunikasi seperti smartphone dan smartwatch mohon dimatikan atau disilentkan. Terima kasih atas perhatian dan kerjasamanya. Semoga ibadah kita diterima Allah SWT.   🕌 Masjid Jami' Al-Karomah · Kaca-kaca Pamijahan">
-            🔇 Ketika masuk waktu sholat, alat komunikasi seperti smartphone dan smartwatch mohon dimatikan atau disilentkan. Terima kasih atas perhatian dan kerjasamanya. Semoga ibadah kita diterima Allah SWT.   🕌 Masjid Jami' Al-Karomah · Kaca-kaca Pamijahan
+               data-text="🔇 Ketika memasuki waktu salat, mohon telepon genggam, jam tangan pintar, dan perangkat elektronik lainnya dimatikan atau diaktifkan mode senyap.   🚶 Jamaah diimbau untuk datang lebih awal, merapatkan dan meluruskan saf, serta menjaga ketenangan dan kekhusyukan di dalam masjid.   🧴 Pastikan telah berwudu dengan sempurna sebelum memasuki masjid.   🙏 Mari kita jaga kebersihan, ketertiban, dan kesucian masjid bersama-sama. Jazākumullāhu khairan atas perhatian dan kerja samanya.   🕌 Masjid Jami' Al-Karomah — Kp. Kaca-kaca, Desa Pamijahan, Kec. Bantarkalong, Kab. Tasikmalaya">
+            🔇 Ketika memasuki waktu salat, mohon telepon genggam, jam tangan pintar, dan perangkat elektronik lainnya dimatikan atau diaktifkan mode senyap.   🚶 Jamaah diimbau untuk datang lebih awal, merapatkan dan meluruskan saf, serta menjaga ketenangan dan kekhusyukan di dalam masjid.   🧴 Pastikan telah berwudu dengan sempurna sebelum memasuki masjid.   🙏 Mari kita jaga kebersihan, ketertiban, dan kesucian masjid bersama-sama. Jazākumullāhu khairan atas perhatian dan kerja samanya.   🕌 Masjid Jami' Al-Karomah — Kp. Kaca-kaca, Desa Pamijahan, Kec. Bantarkalong, Kab. Tasikmalaya
           </div>
         </div>
       </div>
 
       <!-- ── FOOTER ───────────────────────────────────────────────── -->
       <footer class="bottombar">
-        <span class="status-txt" id="statusText" role="status" aria-live="polite">Memuat jadwal…</span>
+        <span class="status-txt" id="statusText" role="status" aria-live="polite">Memuat jadwal salat…</span>
         <div class="footer-meta">
           <span id="lastUpdated">—</span>
-          <span>AlAdhan API · WIB</span>
+          <span>Sumber: AlAdhan API · WIB</span>
         </div>
       </footer>
 
@@ -661,9 +661,9 @@
 
       const PRAYERS = [
         { key:'Fajr',    label:'Subuh',   arabic:'الفجر',  icon:'🌙' },
-        { key:'Dhuhr',   label:'Dzuhur',  arabic:'الظهر',  icon:'☀️' },
-        { key:'Asr',     label:'Ashar',   arabic:'العصر',  icon:'🌤' },
-        { key:'Maghrib', label:'Maghrib', arabic:'المغرب', icon:'🌇' },
+        { key:'Dhuhr',   label:'Zuhur',   arabic:'الظهر',  icon:'☀️' },
+        { key:'Asr',     label:'Asar',    arabic:'العصر',  icon:'🌤' },
+        { key:'Maghrib', label:'Magrib',  arabic:'المغرب', icon:'🌇' },
         { key:'Isha',    label:'Isya',    arabic:'العشاء', icon:'🌃' },
       ];
 
@@ -772,7 +772,7 @@
         const next = findNext();
         if (!next) { $('nextName').textContent=$('nextTime').textContent=$('countdown').textContent='—'; return; }
         const now = wallDate();
-        $('nextName').textContent    = next.label + (next.isTomorrow?' (besok)':'');
+        $('nextName').textContent    = next.label + (next.isTomorrow ? ' (esok)' : '');
         $('nextTime').textContent    = String(state.timings[next.key]).slice(0,5);
         $('countdown').textContent   = msToHms(next.when - now);
       }
@@ -799,7 +799,7 @@
               <div class="pr-arabic">${p.arabic}</div>
             </div>
             <div class="pr-right">
-              <span class="pr-badge">Berikutnya</span>
+              <span class="pr-badge">Selanjutnya</span>
               <span class="pr-time">${t?String(t).slice(0,5):'—'}</span>
             </div>`;
           list.appendChild(row);
@@ -818,7 +818,7 @@
       }
 
       async function refresh() {
-        setStatus('Memuat jadwal sholat…');
+        setStatus('Memuat jadwal salat…');
         try {
           const timings = await fetchTimings();
           state.timings = timings;
@@ -827,14 +827,14 @@
           $('lastUpdated').textContent = 'Diperbarui: '+new Intl.DateTimeFormat('id-ID',{
             dateStyle:'medium',timeStyle:'short',timeZone:WIB_TZ,
           }).format(new Date());
-          setStatus(`Jadwal ${state.city} berhasil dimuat`);
+          setStatus(`Jadwal salat ${state.city} berhasil dimuat`);
         } catch(e) {
           const cached = loadTimings();
           if (cached?.timings) {
             state.timings = cached.timings; renderList();
-            setStatus('Gagal memuat — menampilkan cache','warn');
+            setStatus('Gagal memuat dari internet — menampilkan data tersimpan','warn');
           } else {
-            setStatus('Gagal: '+e.message,'danger');
+            setStatus('Gagal memuat jadwal: '+e.message,'danger');
           }
         }
       }
@@ -872,10 +872,10 @@
         const cached = loadTimings();
         if (cached?.timings) {
           state.timings=cached.timings; renderList();
-          $('lastUpdated').textContent='Cache: '+new Intl.DateTimeFormat('id-ID',{
+          $('lastUpdated').textContent='Tersimpan: '+new Intl.DateTimeFormat('id-ID',{
             dateStyle:'medium',timeStyle:'short',timeZone:WIB_TZ,
           }).format(new Date(cached.at));
-          setStatus('Cache ditampilkan. Sedang refresh…');
+          setStatus('Menampilkan data tersimpan. Sedang memuat ulang…');
         }
         refresh();
       }
