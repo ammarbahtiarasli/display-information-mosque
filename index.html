@@ -558,6 +558,111 @@
         padding:0; margin:-1px; overflow:hidden;
         clip:rect(0,0,0,0); white-space:nowrap; border-width:0;
       }
+
+      /* ════════════════════════════════════════════════════════════
+         PRAYER NOTIFICATION OVERLAY
+      ════════════════════════════════════════════════════════════ */
+      .notif-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 76, 27, 0.72);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .6s ease;
+      }
+
+      .notif-overlay.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .notif-box {
+        background: rgba(255,255,255,0.97);
+        border: 2px solid var(--green);
+        border-radius: 24px;
+        padding: 48px 64px;
+        text-align: center;
+        box-shadow: 0 24px 72px rgba(0,0,0,0.35);
+        max-width: 680px;
+        width: calc(100% - 48px);
+        transform: translateY(16px);
+        transition: transform .6s ease;
+      }
+
+      .notif-overlay.visible .notif-box {
+        transform: translateY(0);
+      }
+
+      .notif-phase {
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--green);
+        margin-bottom: 14px;
+      }
+
+      .notif-title {
+        font-size: clamp(28px, 4.5vw, 52px);
+        font-weight: 900;
+        color: var(--green-dark);
+        line-height: 1.15;
+        margin-bottom: 12px;
+      }
+
+      .notif-prayer {
+        font-size: clamp(22px, 3vw, 38px);
+        font-weight: 700;
+        color: var(--green-mid);
+        margin-bottom: 24px;
+      }
+
+      .notif-bar {
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(0,200,83,.18);
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+
+      .notif-bar-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: var(--green);
+        transition: width 1s linear;
+        width: 100%;
+      }
+
+      .notif-sub {
+        font-size: clamp(13px, 1.4vw, 16px);
+        color: var(--dim);
+        line-height: 1.5;
+      }
+
+      .notif-dismiss {
+        margin-top: 28px;
+        padding: 10px 32px;
+        border-radius: 999px;
+        border: 1.5px solid var(--border);
+        background: transparent;
+        color: var(--dim);
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+        transition: background .15s, color .15s;
+      }
+
+      .notif-dismiss:hover {
+        background: var(--green-dark);
+        color: #fff;
+        border-color: var(--green-dark);
+      }
     </style>
   </head>
   <body>
@@ -651,6 +756,18 @@
         </div>
       </footer>
 
+    </div>
+
+    <!-- ── PRAYER TIME NOTIFICATION OVERLAY ─────────────────── -->
+    <div class="notif-overlay" id="notifOverlay" role="dialog" aria-modal="true" aria-labelledby="notifTitle" aria-live="assertive">
+      <div class="notif-box">
+        <div class="notif-phase" id="notifPhase">—</div>
+        <div class="notif-title" id="notifTitle">—</div>
+        <div class="notif-prayer" id="notifPrayer">—</div>
+        <div class="notif-bar"><div class="notif-bar-fill" id="notifBarFill"></div></div>
+        <div class="notif-sub" id="notifSub">—</div>
+        <button class="notif-dismiss" id="notifDismiss" type="button">Tutup</button>
+      </div>
     </div>
 
     <script>
@@ -812,6 +929,125 @@
         });
       }
 
+      /* ── Prayer time notification ─────────────────────────────
+         Phase timeline (minutes after prayer time):
+           0 – 7  min  → Adzan berlangsung
+           7 – 12 min  → Ikamah sebentar lagi
+           12 – 18 min → Salat segera dilaksanakan
+           > 18 min    → overlay hilang
+         State prevents re-triggering for the same prayer key.
+      ──────────────────────────────────────────────────────── */
+      const notifState = {
+        shownKey: null,   // "Fajr|2025-04-14" — prayer key + date
+        phase: null,      // 'adzan' | 'iqamah' | 'salat' | null
+        dismissed: false,
+      };
+
+      // Durasi setiap fase (menit)
+      const PHASE_ADZAN   = 7;
+      const PHASE_IQAMAH  = 5;   // mulai mnt ke-7, berakhir mnt ke-12
+      const PHASE_SALAT   = 6;   // mulai mnt ke-12, berakhir mnt ke-18
+
+      const PHASES = [
+        {
+          id: 'adzan',
+          from: 0,
+          to: PHASE_ADZAN,
+          phaseLabel: 'Waktu Salat Tiba',
+          title: 'Azan Sedang Berlangsung',
+          sub: 'Mohon hentikan aktivitas sejenak dan bersiap untuk melaksanakan salat berjemaah.',
+        },
+        {
+          id: 'iqamah',
+          from: PHASE_ADZAN,
+          to: PHASE_ADZAN + PHASE_IQAMAH,
+          phaseLabel: 'Persiapan Salat',
+          title: 'Ikamah Sebentar Lagi',
+          sub: 'Luruskan dan rapatkan saf. Pastikan wudu telah sempurna sebelum memasuki masjid.',
+        },
+        {
+          id: 'salat',
+          from: PHASE_ADZAN + PHASE_IQAMAH,
+          to: PHASE_ADZAN + PHASE_IQAMAH + PHASE_SALAT,
+          phaseLabel: 'Salat Berjemaah',
+          title: 'Salat Segera Dilaksanakan',
+          sub: 'Mohon matikan atau aktifkan mode senyap pada perangkat elektronik Anda.',
+        },
+      ];
+
+      function getNotifPhase(elapsedMin) {
+        return PHASES.find(p => elapsedMin >= p.from && elapsedMin < p.to) || null;
+      }
+
+      function showNotif(prayerLabel, phase, elapsedMin, totalMin) {
+        const overlay = $('notifOverlay');
+        $('notifPhase').textContent  = phase.phaseLabel;
+        $('notifTitle').textContent  = phase.title;
+        $('notifPrayer').textContent = 'Waktu Salat ' + prayerLabel;
+        $('notifSub').textContent    = phase.sub;
+
+        // progress bar within current phase
+        const phaseLen  = phase.to - phase.from;
+        const phaseEl   = elapsedMin - phase.from;
+        const pct       = Math.max(0, Math.min(100, 100 - (phaseEl / phaseLen) * 100));
+        $('notifBarFill').style.width = pct + '%';
+
+        if (!overlay.classList.contains('visible')) {
+          overlay.classList.add('visible');
+        }
+      }
+
+      function hideNotif() {
+        $('notifOverlay').classList.remove('visible');
+      }
+
+      function checkPrayerNotif() {
+        if (!state.timings) return;
+        const now = wallDate();
+        if (!now) return;
+
+        // get today's date key
+        const p = tzParts(new Date());
+        if (!p) return;
+        const dateKey = `${p.y}-${p.mo}-${p.d}`;
+
+        for (const pr of PRAYERS) {
+          const when = prayerWhen(state.timings[pr.key]);
+          if (!when) continue;
+
+          const elapsedMs  = now - when;
+          const elapsedMin = elapsedMs / 60000;
+
+          if (elapsedMin < 0) continue; // belum masuk waktu
+          if (elapsedMin >= PHASE_ADZAN + PHASE_IQAMAH + PHASE_SALAT) continue; // sudah lewat
+
+          const uniqueKey = `${pr.key}|${dateKey}`;
+          const phase = getNotifPhase(elapsedMin);
+
+          if (!phase) continue;
+
+          // same prayer, same phase — just update bar, no re-show
+          if (notifState.shownKey === uniqueKey && notifState.phase === phase.id) {
+            if (!notifState.dismissed) {
+              showNotif(pr.label, phase, elapsedMin, PHASE_ADZAN + PHASE_IQAMAH + PHASE_SALAT);
+            }
+            return;
+          }
+
+          // new prayer or new phase — reset dismissed and show
+          if (notifState.shownKey !== uniqueKey || notifState.phase !== phase.id) {
+            notifState.shownKey  = uniqueKey;
+            notifState.phase     = phase.id;
+            notifState.dismissed = false;
+            showNotif(pr.label, phase, elapsedMin, PHASE_ADZAN + PHASE_IQAMAH + PHASE_SALAT);
+          }
+          return;
+        }
+
+        // no active phase → hide if visible
+        hideNotif();
+      }
+
       /* fetch */
       async function fetchTimings() {
         const today = new Intl.DateTimeFormat('en-CA',{timeZone:WIB_TZ,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
@@ -869,9 +1105,15 @@
         });
         $('refreshBtn').addEventListener('click', refresh);
 
+        /* dismiss button */
+        $('notifDismiss').addEventListener('click', () => {
+          notifState.dismissed = true;
+          hideNotif();
+        });
+
         /* tick */
-        renderClock(); renderNext();
-        setInterval(()=>{ renderClock(); renderNext(); renderList(); }, 1000);
+        renderClock(); renderNext(); checkPrayerNotif();
+        setInterval(()=>{ renderClock(); renderNext(); renderList(); checkPrayerNotif(); }, 1000);
         setInterval(refresh, 3_600_000);
 
         /* boot data */
